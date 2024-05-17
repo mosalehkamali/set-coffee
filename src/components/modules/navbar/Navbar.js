@@ -56,9 +56,6 @@ function Navbar() {
             <FiShoppingCart/>
             <span>1</span>
           </Link>
-          <Link href="/compare">
-            <span>1</span>
-          </Link>
           <Link href="/p-user/wishlist">
             <span>1</span>
             <FaRegHeart/>
