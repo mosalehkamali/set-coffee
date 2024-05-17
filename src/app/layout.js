@@ -13,8 +13,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fa">
-      <body className={inter.className}>
+    <html lang="fa" >
+      <body suppressHydrationWarning={true} className={inter.className}>
         <AOSInit />
         {children}
       </body>
