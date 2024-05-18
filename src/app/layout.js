@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import AOSInit from "@/utils/aos";
+import ScrollToTop from "@/utils/ScrollToTop";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
       <body suppressHydrationWarning={true} className={inter.className}>
         <AOSInit />
         {children}
+        <ScrollToTop />
       </body>
     </html>
   );

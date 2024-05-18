@@ -1,0 +1,24 @@
+.button,
+.buttonVisible {
+  position: fixed;
+  bottom: 2rem;
+  left: -3rem;
+  border-radius: 100%;
+  background: white;
+  border: 0;
+  color: black;
+  cursor: pointer;
+  font-size: 2rem;
+  outline: 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.17);
+  padding: 0.7rem 0.8rem 0rem;
+  opacity: 0;
+  transition-duration: 700ms; 
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.buttonVisible {
+  opacity: 1;
+  left: 1rem;
+}
