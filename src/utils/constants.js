@@ -1,5 +1,9 @@
 export const authTypes = {
   LOGIN: "login",
   REGISTER: "register",
-  SMS: "sms",
+};
+
+export const roles = {
+  USER: "USER",
+  ADMIN: "ADMIN",
 };
