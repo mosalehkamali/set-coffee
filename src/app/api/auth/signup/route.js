@@ -31,6 +31,12 @@ export async function POST(req) {
       role: users.length > 0 ? roles.USER : roles.ADMIN,
     });
 
+    if(user){
+      return Response.json({message:"Failed to register !!"},{
+        status:501,
+      })
+    }
+
     const token = tokenGenrator({ name });
 
     return Response.json(
