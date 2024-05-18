@@ -29,7 +29,7 @@ function Login({ showRegisterForm }) {
               <p>مرا به یاد داشته باش</p>
             </div>
             <button className={styles.btn}>ورود</button>
-            <Link href={"/forget-password"} className={styles.forgot_pass}>
+            <Link href={"/login-register/forget-password"} className={styles.forgot_pass}>
               رمز عبور را فراموش کرده اید؟
             </Link>
             <button className={styles.btn} onClick={showSmsForm}>
