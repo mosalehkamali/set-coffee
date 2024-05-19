@@ -1,4 +1,10 @@
-import { hasher, tokenGenrator } from "@/utils/auth";
+import {
+  hasher,
+  tokenGenrator,
+  validateEmail,
+  validatePassword,
+  validatePhone,
+} from "@/utils/auth";
 import { roles } from "@/utils/constants";
 import connectToDB from "base/configs/db";
 import userModel from "base/models/User";
@@ -8,6 +14,42 @@ export async function POST(req) {
   try {
     const reqBody = await req.json();
     const { name, phone, email, password } = reqBody;
+
+    if (!name.trim() || !phone.trim()) {
+      return Response.json(
+        { message: "Complete All Required Fields !!" },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    if (!validatePhone(phone)) {
+      return Response.json(
+        { message: "Phone is not valid !!" },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    if (email && !validateEmail(email)) {
+      return Response.json(
+        { message: "Email is not valid !!" },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    if (password && !validatePassword(password)) {
+      return Response.json(
+        { message: "Password is not valid !!" },
+        {
+          status: 401,
+        }
+      );
+    }
 
     const isUserExist = await userModel.findOne({
       $or: [{ name }, { email }, { phone }],
@@ -31,10 +73,13 @@ export async function POST(req) {
       role: users.length > 0 ? roles.USER : roles.ADMIN,
     });
 
-    if(user){
-      return Response.json({message:"Failed to register !!"},{
-        status:501,
-      })
+    if (!user) {
+      return Response.json(
+        { message: "Failed to register !!" },
+        {
+          status: 501,
+        }
+      );
     }
 
     const token = tokenGenrator({ name });
