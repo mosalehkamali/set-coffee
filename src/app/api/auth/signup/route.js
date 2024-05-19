@@ -19,7 +19,7 @@ export async function POST(req) {
       return Response.json(
         { message: "Complete All Required Fields !!" },
         {
-          status: 401,
+          status: 403,
         }
       );
     }
@@ -28,7 +28,7 @@ export async function POST(req) {
       return Response.json(
         { message: "Phone is not valid !!" },
         {
-          status: 401,
+          status: 403,
         }
       );
     }
@@ -37,7 +37,7 @@ export async function POST(req) {
       return Response.json(
         { message: "Email is not valid !!" },
         {
-          status: 401,
+          status: 403,
         }
       );
     }
@@ -46,7 +46,7 @@ export async function POST(req) {
       return Response.json(
         { message: "Password is not valid !!" },
         {
-          status: 401,
+          status: 403,
         }
       );
     }

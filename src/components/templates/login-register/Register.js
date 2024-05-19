@@ -62,7 +62,7 @@ function Register({ showloginForm }) {
           "success",
           "ورود به پنل کاربری"
         );
-      case 401:
+      case 403:
         return sweetalert("اطلاعات وارد شده معتبر نیست", "error", "تلاش مجدد");
       case 422:
         return sweetalert(
