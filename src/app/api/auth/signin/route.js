@@ -34,7 +34,7 @@ export async function POST(req) {
 
     if (!validateEmail(identifier) && !validatePhone(identifier)) {
       return Response.json(
-        { message: "Identifier is not valid !!" },
+        { message: "Invalid Email or Phone !!" },
         {
           status: 403,
         }
