@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styles from "./register.module.css";
 import Sms from "./Sms";
-import swal from "sweetalert";
+import { sweetalert } from "@/utils/helpers";
+import { validateEmail, validatePassword, validatePhone } from "@/utils/auth";
 
 function Register({ showloginForm }) {
   const [registerWithPass, setRegisterWithPass] = useState(false);
@@ -21,9 +22,30 @@ function Register({ showloginForm }) {
   };
 
   const signUp = async () => {
+    if (!name.trim()) {
+      sweetalert("لطفا نام را وارد کنید", "error", "تلاش مجدد");
+    }
+
+    if (!validatePhone(phone)) {
+      sweetalert(
+        "لطفا شماره موبایل را به صورت صحیح وارد کنید",
+        "error",
+        "تلاش مجدد"
+      );
+    }
+    if (!validatePassword(password)) {
+      sweetalert(
+        "رمز باید بیشتر از هشت کاراکتر و شامل حروف بزرگ و عدد و علامت باشد",
+        "error",
+        "تلاش مجدد"
+      );
+    }
     const data = { name, phone, password };
 
-    if (email.trim()) {
+    if (email) {
+      if (!validateEmail(email)) {
+        sweetalert("ایمیل وارد شده معتبر نیست", "error", "تلاش مجدد");
+      }
       data["email"] = email;
     }
 
@@ -33,12 +55,23 @@ function Register({ showloginForm }) {
       body: JSON.stringify({ ...data }),
     });
     const response = await res.json();
-    if (res.status === 201) {
-      swal({
-        title: "ثبت نام با موفقیت انجام شد",
-        icon: "success",
-        buttons: "ورود به پنل کاربری",
-      });
+    switch (res.status) {
+      case 201:
+        return sweetalert(
+          "ثبت نام با موفقیت انجام شد",
+          "success",
+          "ورود به پنل کاربری"
+        );
+      case 401:
+        return sweetalert("اطلاعات وارد شده معتبر نیست", "error", "تلاش مجدد");
+      case 422:
+        return sweetalert(
+          "کاربر با این اطلاعات قبلا ثبت نام کرده است",
+          "error",
+          "تلاش مجدد"
+        );
+      case 500:
+        return sweetalert(response.message, "error", "تلاش مجدد");
     }
   };
   return (

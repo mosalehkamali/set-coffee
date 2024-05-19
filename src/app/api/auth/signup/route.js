@@ -77,7 +77,7 @@ export async function POST(req) {
       return Response.json(
         { message: "Failed to register !!" },
         {
-          status: 501,
+          status: 500,
         }
       );
     }
