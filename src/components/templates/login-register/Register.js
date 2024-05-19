@@ -23,18 +23,18 @@ function Register({ showloginForm }) {
 
   const signUp = async () => {
     if (!name.trim()) {
-      sweetalert("لطفا نام را وارد کنید", "error", "تلاش مجدد");
+      return sweetalert("لطفا نام را وارد کنید", "error", "تلاش مجدد");
     }
 
     if (!validatePhone(phone)) {
-      sweetalert(
+      return sweetalert(
         "لطفا شماره موبایل را به صورت صحیح وارد کنید",
         "error",
         "تلاش مجدد"
       );
     }
     if (!validatePassword(password)) {
-      sweetalert(
+      return sweetalert(
         "رمز باید بیشتر از هشت کاراکتر و شامل حروف بزرگ و عدد و علامت باشد",
         "error",
         "تلاش مجدد"
@@ -44,7 +44,7 @@ function Register({ showloginForm }) {
 
     if (email) {
       if (!validateEmail(email)) {
-        sweetalert("ایمیل وارد شده معتبر نیست", "error", "تلاش مجدد");
+        return sweetalert("ایمیل وارد شده معتبر نیست", "error", "تلاش مجدد");
       }
       data["email"] = email;
     }

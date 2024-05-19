@@ -65,9 +65,16 @@ export async function POST(req) {
         }
       );
     }
-    
+
     const token = tokenGenrator({ name: user.name });
     const refreshToken = generateRefreshToken({ name: user.name });
+
+    await userModel.findOneAndUpdate(
+      { $or: [{ name: identifier }, { email: identifier }] },
+      {
+        $set: { refreshToken },
+      }
+    );
 
     return Response.json(
       { message: "User Logged In Successfully " },
