@@ -6,19 +6,20 @@ export const hasher = async (password) => {
   return hashedPassword;
 };
 
-export const passwordValidator = async (hashedPassword, password) => {
-  const isValidPassword = await compare(hashedPassword, password);
+export const passwordValidator = async (password,hashedPassword ) => {
+  const isValidPassword = await compare(password,hashedPassword);
   return isValidPassword;
 };
 
 export const tokenGenrator = (data) => {
   const token = sign({ ...data }, process.env.AccessTokenPrivateKey, {
     expiresIn: "60s",
+    algorithm:"HS256",
   });
   return token;
 };
 
-export const verifyToken = () => {
+export const verifyToken = (token) => {
   try {
     const payLoad = verify(token, process.env.AccessTokenPrivateKey);
 
