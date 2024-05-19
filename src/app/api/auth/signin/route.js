@@ -1,4 +1,5 @@
 import {
+  generateRefreshToken,
   passwordValidator,
   tokenGenrator,
   validateEmail,
@@ -49,7 +50,7 @@ export async function POST(req) {
       return Response.json(
         { message: "User does not exist !!!" },
         {
-          status: 204,
+          status: 419,
         }
       );
     }
@@ -64,7 +65,9 @@ export async function POST(req) {
         }
       );
     }
-    const token = tokenGenrator({ user: user.name });
+    
+    const token = tokenGenrator({ name: user.name });
+    const refreshToken = generateRefreshToken({ name: user.name });
 
     return Response.json(
       { message: "User Logged In Successfully " },
