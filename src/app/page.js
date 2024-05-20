@@ -14,9 +14,10 @@ export default async function Home() {
   const token = cookies().get("token")?.value;
   let userData = null;
   if (token) {
-    const payLoad = verifyToken(token);
-    if (payLoad) {
-      userData = await userModel.findOne({ name: payLoad.name });
+    const tokenPayLoad = verifyToken(token);
+    if (tokenPayLoad) {
+      userData = JSON.parse(JSON.stringify(await userModel.findOne({ name: tokenPayLoad.name })));
+      
     }
   }
   return (
