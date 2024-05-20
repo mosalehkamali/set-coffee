@@ -8,7 +8,7 @@ const page = async () => {
   const user = await authUser();
   return (
     <>
-      <Navbar isLogin={user} />
+      <Navbar isLogin={user?true:false} />
       <Breadcrumb route={"درباره ما"} />
       <div className={styles.container}>
         <section>
