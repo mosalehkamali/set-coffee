@@ -8,6 +8,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 
 function Navbar({isLogin}) {
+  console.log(isLogin);
   const [fixTop, setFixTop] = useState(false);
   useEffect(() => {
     const fixNavToTop = () => {
