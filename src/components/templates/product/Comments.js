@@ -2,10 +2,10 @@ import Comment from "@/components/modules/comment/Comment";
 import styles from "./comments.module.css";
 import CommentForm from "./CommentForm";
 
-const Comments = () => {
+const Comments = ({ comments }) => {
   return (
     <div>
-      <p>نظرات (7) :</p>
+      <p>نظرات ({comments.length}) :</p>
       <hr />
 
       <main className={styles.comments}>
@@ -15,11 +15,9 @@ const Comments = () => {
             ده -10- عددی
           </p>
           <div>
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
+            {comments?.map((comment) => (
+              <Comment key={comment._id} data={comment} />
+            ))}
           </div>
         </div>
         <div className={styles.form_bg}>

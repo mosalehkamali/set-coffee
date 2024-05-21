@@ -6,7 +6,14 @@ import { FaTelegram, FaLinkedinIn, FaPinterest } from "react-icons/fa";
 import styles from "./details.module.css";
 import Breadcrumb from "./Breadcrumb";
 
-const Details = ({ title, shortDescription, category, tag }) => {
+const Details = ({
+  title,
+  price,
+  shortDescription,
+  category,
+  tag,
+  commentsLength,
+}) => {
   return (
     <main style={{ width: "63%" }}>
       <Breadcrumb title={title} />
@@ -20,10 +27,9 @@ const Details = ({ title, shortDescription, category, tag }) => {
           <FaStar />
           <FaStar />
         </div>
-        <p>(دیدگاه 7 کاربر)</p>
+        <p>(دیدگاه {commentsLength} کاربر)</p>
       </div>
-
-      <p className={styles.price}>205,000 تومان</p>
+      <p className={styles.price}>{price.toLocaleString()}</p>
       <span className={styles.description}>{shortDescription}</span>
 
       <hr />
@@ -54,14 +60,14 @@ const Details = ({ title, shortDescription, category, tag }) => {
       <hr />
 
       <div className={styles.details}>
-        <strong>شناسه محصول: GOLD Nespresso Compatible capsule</strong>
+        <strong>شناسه محصول: {title}</strong>
         <p>
           {" "}
           <strong>دسته:</strong>
           {category}
         </p>
         <p>
-          <strong>برچسب:</strong> {tag}
+          <strong>برچسب:</strong> {tag.join(", ")}
         </p>
       </div>
 

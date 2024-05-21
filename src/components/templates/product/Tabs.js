@@ -5,7 +5,7 @@ import { useState } from "react";
 import Description from "./Description";
 import MoreInfoes from "./MoreInfoes";
 import Comments from "./Comments";
-const Tabs = () => {
+const Tabs = ({ longDescription, moreInfo, comments }) => {
   const [tab, setTab] = useState("description");
   return (
     <div data-aos="fade-left" className={styles.tabs}>
@@ -14,21 +14,21 @@ const Tabs = () => {
         type="radio"
         id="description"
         name="tab-control"
-        checked={tab == "description" && "checked"}
+        defaultChecked={tab == "description" && "checked"}
       />
       <input
         onClick={() => setTab("moreInfoes")}
         type="radio"
         id="moreInfoes"
         name="tab-control"
-        checked={tab == "moreInfoes" && "checked"}
+        defaultChecked={tab == "moreInfoes" && "checked"}
       />
       <input
         onClick={() => setTab("comments")}
         type="radio"
         id="comments"
         name="tab-control"
-        checked={tab == "comments" && "checked"}
+        defaultChecked={tab == "comments" && "checked"}
       />
       <ul>
         <li title="Features">
@@ -46,7 +46,7 @@ const Tabs = () => {
         <li title="Shipping">
           <label htmlFor="comments" role="button">
             {" "}
-            نظرات (7){" "}
+            نظرات ({comments.length}){" "}
           </label>
         </li>
       </ul>
@@ -56,10 +56,10 @@ const Tabs = () => {
           <Description />
         </section>
         <section className={styles.tabs_content}>
-          <MoreInfoes />
+          <MoreInfoes moreInfo={moreInfo} />
         </section>
         <section className={styles.tabs_content}>
-          <Comments />
+          <Comments comments={comments} />
         </section>
       </div>
     </div>
