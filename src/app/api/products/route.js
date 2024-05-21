@@ -46,3 +46,18 @@ export async function POST(req) {
   }
 }
 
+export async function GET(req) {
+  try {
+    await connectToDB();
+    const products = await productModel.find({}).populate("comments").lean();
+    return Response.json({ message: "All Products", products });
+  } catch (err) {
+    console.log(err);
+    return Response.json(
+      { error: "UnKnown Internal Server Error !!!" },
+      {
+        status: 500,
+      }
+    );
+  }
+}
