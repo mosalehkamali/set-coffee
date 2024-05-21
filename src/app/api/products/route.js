@@ -30,7 +30,7 @@ export async function POST(req) {
     });
 
     return Response.json(
-      { message: "Product Added Successfully :))", product },
+      { message: "Product Added Successfully :))" },
       {
         status: 201,
       }
