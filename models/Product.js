@@ -1,12 +1,17 @@
 const { default: mongoose } = require("mongoose");
+require("./Comment");
 
 const schema = new mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true,
     },
-    description: {
+    shortDescription: {
+      type: String,
+      required: true,
+    },
+    longDescription: {
       type: String,
       required: true,
     },
@@ -14,8 +19,20 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    image: {
+    weight: {
+      type: Number,
+      required: true,
+    },
+    suitableFor: {
       type: String,
+      required: true,
+    },
+    smell: {
+      type: String,
+      required: true,
+    },
+    score: {
+      type: Number,
       required: true,
     },
     category: {
@@ -23,7 +40,7 @@ const schema = new mongoose.Schema(
       required: true,
     },
     tag: {
-      type: String,
+      type: [String],
       required: true,
     },
   },
@@ -32,13 +49,11 @@ const schema = new mongoose.Schema(
   }
 );
 
-schema.virtual(
-    "comments",{
-        ref:"Comment",
-        localField:"_id",
-        foreignField:"product"
-    }
-)
+schema.virtual("comments", {
+  ref: "Comment",
+  localField: "_id",
+  foreignField: "product",
+});
 
 const model = mongoose.models.Product || mongoose.model("Product", schema);
 
