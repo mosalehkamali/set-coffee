@@ -17,7 +17,12 @@ const product = async ({ params }) => {
       await productModel.findOne({ _id: productID }).populate("comments").lean()
     )
   );
-  console.log(product);
+
+  const allScores = product.comments?.map((comment) => comment.score);
+  const averageScore = Math.floor(
+    allScores.reduce((a, b) => a + b, 0) / allScores.length
+  );
+
   return (
     <div className={styles.container}>
       <Navbar isLogin={user ? true : false} />
@@ -30,12 +35,17 @@ const product = async ({ params }) => {
             category={product.category}
             tag={product.tag}
             commentsLength={product.comments.length}
+            averageScore={averageScore}
           />
           <Gallery />
         </div>
         <Tabs
           longDescription={product.longDescription}
-          moreInfo={{ smell: product.smell, weight: product.weight }}
+          moreInfo={{
+            smell: product.smell,
+            weight: product.weight,
+            suitableFor: product.suitableFor,
+          }}
           comments={product.comments}
         />
         <MoreProducts />

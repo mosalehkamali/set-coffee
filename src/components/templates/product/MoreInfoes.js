@@ -8,11 +8,15 @@ const MoreInfoes = ({ moreInfo }) => {
       <main>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <p>وزن</p>
-          <p>{moreInfo.weight} کیلو</p>
+          <p>{moreInfo.weight} گرم</p>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <p>بو</p>
           <p>{moreInfo.smell}</p>
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <p>مناسب برای</p>
+          <p>{moreInfo.suitableFor}</p>
         </div>
       </main>
     </div>

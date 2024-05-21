@@ -1,4 +1,4 @@
-import { FaFacebookF, FaStar, FaTwitter } from "react-icons/fa";
+import { FaFacebookF, FaRegStar, FaStar, FaTwitter } from "react-icons/fa";
 import { IoCheckmark } from "react-icons/io5";
 import { CiHeart } from "react-icons/ci";
 import { TbSwitch3 } from "react-icons/tb";
@@ -13,7 +13,9 @@ const Details = ({
   category,
   tag,
   commentsLength,
+  averageScore,
 }) => {
+  const stars = new Array(averageScore).fill(undefined);
   return (
     <main style={{ width: "63%" }}>
       <Breadcrumb title={title} />
@@ -21,11 +23,12 @@ const Details = ({
 
       <div className={styles.rating}>
         <div>
-          <FaStar />
-          <FaStar />
-          <FaStar />
-          <FaStar />
-          <FaStar />
+          {[...Array(averageScore)].map((star,index) => (
+            <FaStar key={index}/>
+          ))}
+          {[...Array(5 - averageScore)].map((disStar,index) => (
+            <FaRegStar key={index}  />
+          ))}
         </div>
         <p>(دیدگاه {commentsLength} کاربر)</p>
       </div>
