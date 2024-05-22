@@ -9,7 +9,7 @@ const Comment = ({ data }) => {
         <div className={styles.main_details}>
           <div className={styles.user_info}>
             <strong>{data.username}</strong>
-            <p>{data.date}</p>
+            <p>{new Date(data.date).toLocaleDateString("fa-IR")}</p>
           </div>
           <div className={styles.stars}>
           {[...Array(data.score)].map((star,index) => (
