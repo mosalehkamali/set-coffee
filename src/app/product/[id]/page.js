@@ -47,6 +47,8 @@ const product = async ({ params }) => {
             suitableFor: product.suitableFor,
           }}
           comments={product.comments}
+          title={product.name}
+          productID={productID}
         />
         <MoreProducts />
       </div>
