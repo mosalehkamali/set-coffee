@@ -48,12 +48,7 @@ const product = async ({ params }) => {
       <div data-aos="fade-up" className={styles.contents}>
         <div className={styles.main}>
           <Details
-            title={product.name}
-            price={product.price}
-            shortDescription={product.shortDescription}
-            category={product.category}
-            tag={product.tag}
-            commentsLength={comments.length}
+            {...product}
             averageScore={averageScore}
           />
           <Gallery />

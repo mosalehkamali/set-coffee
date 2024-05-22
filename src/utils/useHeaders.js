@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import userModel from "base/models/User";
 import { cookies } from "next/headers";
 import connectToDB from "base/configs/db";
@@ -13,6 +13,8 @@ export const authUser = async () => {
       return JSON.parse(
         JSON.stringify(await userModel.findOne({ name: tokenPayLoad.name }))
       );
+    } else {
+      return false;
     }
   } else {
     return false;

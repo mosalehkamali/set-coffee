@@ -1,9 +1,10 @@
 import Link from "next/link";
 import styles from "./product.module.css";
 import { FaRegStar, FaStar } from "react-icons/fa";
-import { CiSearch, CiHeart } from "react-icons/ci";
+import { CiSearch } from "react-icons/ci";
+import AddToWishlist from "./AddToWishlist";
 
-function Product({product}) {
+export default function Product({product}) {
     return (
         <div className={styles.card}>
           <div className={styles.details_container}>
@@ -16,10 +17,7 @@ function Product({product}) {
                 <CiSearch />
                 <p className={styles.tooltip}>مشاهده سریع</p>
               </Link>
-              <div>
-                <CiHeart />
-                <p className={styles.tooltip}>افزودن به علاقه مندی ها </p>
-              </div>
+            <AddToWishlist productId={product._id} />
             </div>
             <button>افزودن به سبد خرید</button>
           </div>
@@ -42,4 +40,4 @@ function Product({product}) {
       );
 }
 
-export default Product
+

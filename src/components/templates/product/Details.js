@@ -5,28 +5,30 @@ import { TbSwitch3 } from "react-icons/tb";
 import { FaTelegram, FaLinkedinIn, FaPinterest } from "react-icons/fa";
 import styles from "./details.module.css";
 import Breadcrumb from "./Breadcrumb";
+import AddToWishlist from "@/components/modules/product/AddToWishlist";
 
-const Details = ({
-  title,
+const Details = async ({
+  name,
   price,
   shortDescription,
   category,
   tag,
   commentsLength,
+  _id,
   averageScore,
 }) => {
   return (
     <main style={{ width: "63%" }}>
-      <Breadcrumb title={title} />
-      <h2>{title}</h2>
+      <Breadcrumb title={name} />
+      <h2>{name}</h2>
 
       <div className={styles.rating}>
         <div>
-          {[...Array(averageScore)].map((star,index) => (
-            <FaStar key={index}/>
+          {[...Array(averageScore)].map((star, index) => (
+            <FaStar key={index} />
           ))}
-          {[...Array(5 - averageScore)].map((disStar,index) => (
-            <FaRegStar key={index}  />
+          {[...Array(5 - averageScore)].map((disStar, index) => (
+            <FaRegStar key={index} />
           ))}
         </div>
         <p>(دیدگاه {commentsLength} کاربر)</p>
@@ -50,8 +52,8 @@ const Details = ({
 
       <section className={styles.wishlist}>
         <div>
-          <CiHeart />
-          <a href="/">افزودن به علاقه مندی ها</a>
+          <label>افزودن به علاقه مندی ها</label>
+          <AddToWishlist productId={_id}/>
         </div>
         <div>
           <TbSwitch3 />
@@ -62,7 +64,7 @@ const Details = ({
       <hr />
 
       <div className={styles.details}>
-        <strong>شناسه محصول: {title}</strong>
+        <strong>شناسه محصول: {name}</strong>
         <p>
           {" "}
           <strong>دسته:</strong>

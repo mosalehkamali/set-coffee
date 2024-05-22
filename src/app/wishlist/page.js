@@ -30,7 +30,7 @@ const wishlist = async () => {
           {wishes.length > 0 ? (
             <section>
               {wishes.map((wish) => (
-                <Product key={wish._id} product={wish.product} />
+                <Product key={wish._id} product={JSON.parse(JSON.stringify(wish.product))} />
               ))}
             </section>
           ) : (
