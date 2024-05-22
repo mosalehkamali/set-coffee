@@ -1,6 +1,8 @@
 import { IoMdStar } from "react-icons/io";
 import styles from "./commentForm.module.css";
 import { useState } from "react";
+import { validateEmail } from "@/utils/auth";
+import { sweetalert } from "@/utils/helpers";
 const CommentForm = ({ productID }) => {
   const [username, setUsername] = useState("");
   const [body, setBody] = useState("");
@@ -14,6 +16,20 @@ const CommentForm = ({ productID }) => {
   };
 
   const signComment = async () => {
+    if (
+      !username.trim() ||
+      !body.trim() ||
+      !email.trim() ||
+      !score ||
+      !productID.trim()
+    ) {
+      return sweetalert("لطفا همه بخش های مورد نیاز را پر کنید","error","فهمیدم")
+    }
+
+    if (!validateEmail(email)) {
+      return sweetalert("ایمیل وارد شده معتبر نیست !!","error","تلاش مجدد")
+    }
+
     const res = await fetch("/api/comments", {
       method: "POST",
       headers: {
@@ -27,8 +43,10 @@ const CommentForm = ({ productID }) => {
         product: productID,
       }),
     });
-    const result = await res.json();
-    console.log(result);
+    if(res.status === 201){
+      return sweetalert("کامنت شما با موفقیت ثبت شد","success","باشه")
+    }
+    
   };
   return (
     <div className={styles.form}>
