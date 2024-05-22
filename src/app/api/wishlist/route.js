@@ -28,7 +28,7 @@ export async function POST(req) {
       );
     }
     return Response.json(
-      { message: "Wishlist created successfully" },
+      { message: "Product Added To Wishlist successfully" },
       {
         status: 201,
       }
