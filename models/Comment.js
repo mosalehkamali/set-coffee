@@ -24,14 +24,15 @@ const schema = new mongoose.Schema(
       default: () => Date.now(),
       immutable: false,
     },
+    isAccept: {
+      type: Boolean,
+      default: false,
+    },
     product: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: true,
     },
-  },
-  {
-    timestamps: true,
   }
 );
 

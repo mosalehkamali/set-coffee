@@ -18,7 +18,8 @@ const product = async ({ params }) => {
     )
   );
 
-  const allScores = product.comments?.map((comment) => comment.score);
+  const comments = product.comments.filter((comment) => comment.isAccept);
+  const allScores = comments.map((comment) => comment.score);
   const averageScore = Math.floor(
     allScores.reduce((a, b) => a + b, 0) / allScores.length
   );
@@ -34,7 +35,7 @@ const product = async ({ params }) => {
             shortDescription={product.shortDescription}
             category={product.category}
             tag={product.tag}
-            commentsLength={product.comments.length}
+            commentsLength={comments.length}
             averageScore={averageScore}
           />
           <Gallery />
@@ -46,7 +47,7 @@ const product = async ({ params }) => {
             weight: product.weight,
             suitableFor: product.suitableFor,
           }}
-          comments={product.comments}
+          comments={comments}
           title={product.name}
           productID={productID}
         />
