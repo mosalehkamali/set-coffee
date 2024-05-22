@@ -36,6 +36,12 @@ function AddToWishlist({ productId }) {
         "success",
         "باشه"
       );
+    } else if (res.status === 422) {
+      return sweetalert(
+        "این محصول از قبل در لیست علاقه مندی های شما وجود دارد",
+        "error",
+        "فهمیدم"
+      );
     } else {
       return sweetalert("لیست علاقه مندی ها با خطا مواجه شد", "error", "باشه");
     }

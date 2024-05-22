@@ -17,6 +17,16 @@ export async function POST(req) {
         }
       );
     }
+
+    const isWishExist = await wishlistModel.findOne({ user, product });
+    if (isWishExist) {
+      return Response.json(
+        { message: "This product is already in your wishlist !!!" },
+        {
+          status: 422,
+        }
+      );
+    }
     const wishlist = await wishlistModel.create({ user, product });
 
     if (!wishlist) {
