@@ -15,7 +15,6 @@ const Details = ({
   commentsLength,
   averageScore,
 }) => {
-  const stars = new Array(averageScore).fill(undefined);
   return (
     <main style={{ width: "63%" }}>
       <Breadcrumb title={title} />

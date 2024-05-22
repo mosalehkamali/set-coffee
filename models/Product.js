@@ -33,7 +33,7 @@ const schema = new mongoose.Schema(
     },
     score: {
       type: Number,
-      default: 5,
+      default: 0,
       required:false,
     },
     category: {

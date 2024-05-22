@@ -17,13 +17,31 @@ const product = async ({ params }) => {
       await productModel.findOne({ _id: productID }).populate("comments").lean()
     )
   );
-
   const comments = product.comments.filter((comment) => comment.isAccept);
   const allScores = comments.map((comment) => comment.score);
-  const averageScore = Math.floor(
-    allScores.reduce((a, b) => a + b, 0) / allScores.length
-  );
+  const averageScore =
+    allScores > 0
+      ? Math.floor(allScores.reduce((a, b) => a + b, 0) / allScores.length)
+      : 0;
+  if (comments.length > 0) {
+    await productModel.findOneAndUpdate(
+      { _id: productID },
+      {
+        score: averageScore,
+      }
+    );
+  }
 
+  const relatedProducts = JSON.parse(
+    JSON.stringify(
+      await productModel.find(
+        {
+          category: product.category,
+        },
+        "name price score"
+      )
+    )
+  ).filter((item) => item._id !== productID);
   return (
     <div className={styles.container}>
       <Navbar isLogin={user ? true : false} />
@@ -51,7 +69,7 @@ const product = async ({ params }) => {
           title={product.name}
           productID={productID}
         />
-        <MoreProducts />
+        <MoreProducts relatedProducts={relatedProducts} />
       </div>
       <Footer />
     </div>
