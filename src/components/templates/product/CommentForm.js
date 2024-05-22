@@ -1,6 +1,35 @@
 import { IoMdStar } from "react-icons/io";
 import styles from "./commentForm.module.css";
-const CommentForm = ({productID}) => {
+import { useState } from "react";
+const CommentForm = ({ productID }) => {
+  const [username, setUsername] = useState("");
+  const [body, setBody] = useState("");
+  const [email, setEmail] = useState("");
+  const [score, setScore] = useState();
+  const [showUserScore, setShowUserScore] = useState(false);
+
+  const signScore = (userScore) => {
+    setScore(userScore);
+    setShowUserScore(true);
+  };
+
+  const signComment = async () => {
+    const res = await fetch("/api/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        body,
+        email,
+        score,
+        product: productID,
+      }),
+    });
+    const result = await res.json();
+    console.log(result);
+  };
   return (
     <div className={styles.form}>
       <p className={styles.title}>دیدگاه خود را بنویسید</p>
@@ -9,13 +38,28 @@ const CommentForm = ({productID}) => {
         <span style={{ color: "red" }}>*</span>
       </p>
       <div className={styles.rate}>
-        <p>امتیاز شما :</p>
+        <p>
+          امتیاز شما<span style={{ color: "red" }}>*</span>:
+        </p>
         <div>
-          <IoMdStar />
-          <IoMdStar />
-          <IoMdStar />
-          <IoMdStar />
-          <IoMdStar />
+          {!showUserScore ? (
+            [...Array(5)].map((item, index) => (
+              <IoMdStar key={index} onClick={() => signScore(5 - index)} />
+            ))
+          ) : (
+            <>
+              {[...Array(5 - score)].map((item, index) => (
+                <IoMdStar key={index} onClick={() => signScore(5 - index)} />
+              ))}
+              {[...Array(score)].map((item, index) => (
+                <IoMdStar
+                  style={{ color: "orange" }}
+                  key={index}
+                  onClick={() => signScore(score - index)}
+                />
+              ))}
+            </>
+          )}
         </div>
       </div>
       <div className={styles.group}>
@@ -24,6 +68,8 @@ const CommentForm = ({productID}) => {
           <span style={{ color: "red" }}>*</span>
         </label>
         <textarea
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
           id="comment"
           name="comment"
           cols="45"
@@ -38,14 +84,22 @@ const CommentForm = ({productID}) => {
             نام
             <span style={{ color: "red" }}>*</span>
           </label>
-          <input type="text" />
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            type="text"
+          />
         </div>
         <div className={styles.group}>
           <label htmlFor="">
             ایمیل
             <span style={{ color: "red" }}>*</span>
           </label>
-          <input type="email" />
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+          />
         </div>
       </div>
       <div className={styles.checkbox}>
@@ -56,7 +110,7 @@ const CommentForm = ({productID}) => {
           می‌نویسم.
         </p>
       </div>
-      <button>ثبت</button>
+      <button onClick={signComment}>ثبت</button>
     </div>
   );
 };
