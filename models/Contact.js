@@ -1,27 +1,32 @@
 const mongoose = require("mongoose");
 
-const schema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
+const schema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    company: {
+      type: String,
+      required: false,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
+    message: {
+      type: String,
+      required: true,
+    },
   },
-  name: {
-    type: String,
-    required: true,
-  },
-  company: {
-    type: String,
-    required: false,
-  },
-  phone: {
-    type: String,
-    required: true,
-  },
-  message: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 const model = mongoose.models.Contact || mongoose.model("Contact", schema);
 

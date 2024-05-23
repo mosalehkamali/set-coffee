@@ -2,14 +2,13 @@ import { validateEmail, validatePhone } from "@/utils/auth";
 import connectToDB from "base/configs/db";
 import contactModel from "base/models/Contact";
 
-export async function PSOT(req) {
+export async function POST(req) {
   try {
     await connectToDB();
     const { email, name, company, phone, message } = await req.json();
     if (
       !email.trim() ||
       !name.trim() ||
-      !company.trim() ||
       !phone.trim() ||
       !message.trim()
     ) {
