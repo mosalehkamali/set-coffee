@@ -5,7 +5,7 @@ import Form from "@/components/templates/contact-us/Form";
 import Information from "@/components/templates/contact-us/Information";
 import Map from "@/components/templates/contact-us/Map";
 import styles from "@/styles/contact-us.module.css";
-import { authUser } from "@/utils/useHeaders";
+import { authUser } from "@/utils/serverHelpers";
 import Link from "next/link";
 
 const page = async () => {

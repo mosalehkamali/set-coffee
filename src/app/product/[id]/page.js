@@ -5,7 +5,7 @@ import Tabs from "@/components/templates/product/Tabs";
 import MoreProducts from "@/components/templates/product/MoreProducts";
 import Footer from "@/components/modules/footer/Footer";
 import Navbar from "@/components/modules/navbar/Navbar";
-import { authUser } from "@/utils/useHeaders";
+import { authUser } from "@/utils/serverHelpers";
 import productModel from "base/models/Product";
 
 const product = async ({ params }) => {

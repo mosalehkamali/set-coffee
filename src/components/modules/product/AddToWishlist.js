@@ -3,7 +3,7 @@
 import React from "react";
 import { CiHeart } from "react-icons/ci";
 import styles from "./product.module.css";
-import { authUser } from "@/utils/useHeaders";
+import { authUser } from "@/utils/serverHelpers";
 import { useRouter } from "next/navigation";
 import { sweetalert } from "@/utils/helpers";
 
