@@ -5,14 +5,53 @@ import swal from "sweetalert";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDelete } from "react-icons/md";
 import { useState } from "react";
+import { sweetalert } from "@/utils/helpers";
+import { validateEmail, validatePhone } from "@/utils/auth";
 
-function AccountDetails({user}) {
+function AccountDetails({ user }) {
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
 
   const updateUser = async () => {
-  
+    if (!name.trim() || !email.trim() || !phone.trim()) {
+      return sweetalert(
+        "لطفا همه قسمت ها را پر کنید کنید",
+        "error",
+        "تلاش مجدد"
+      );
+    }
+
+    if (!validatePhone(phone)) {
+      return sweetalert(
+        "لطفا شماره موبایل را به صورت صحیح وارد کنید",
+        "error",
+        "تلاش مجدد"
+      );
+    }
+
+    if (email) {
+      if (!validateEmail(email)) {
+        return sweetalert("ایمیل وارد شده معتبر نیست", "error", "تلاش مجدد");
+      }
+    }
+    const res = await fetch("/api/user", {
+      method: "POST",
+      headers: { "Content-Type": "applicatio/json" },
+      body: JSON.stringify({ name, email, phone }),
+    });
+    switch (res.status) {
+      case 200:
+        return sweetalert(
+          "اطلاعات حساب شما تغییر کرد",
+          "success",
+          "فهمیدم"
+        );
+      case 403:
+        return sweetalert("اطلاعات وارد شده معتبر نیست", "error", "تلاش مجدد");
+      case 500:
+        return sweetalert("ثبت تغییرات با خطا مواجه شد", "error", "تلاش مجدد");
+    }
   };
 
   return (

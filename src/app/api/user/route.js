@@ -53,8 +53,7 @@ export async function POST(req) {
       );
     }
     const token = tokenGenrator({ name });
-    const cookie = cookies().set("token", token);
-    if (!token || cookie) {
+    if (!token) {
       return Response.json(
         { message: "Failed to Update !!" },
         {
@@ -66,6 +65,7 @@ export async function POST(req) {
       { message: "User Data Changed Successfully :))" },
       {
         status: 200,
+        headers: { "Set-Cookie": `token=${token};path=/;httpOnly=true` },
       }
     );
   } catch (err) {
