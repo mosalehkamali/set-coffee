@@ -4,8 +4,10 @@ import Link from "next/link";
 import Sms from "./Sms";
 import { sweetalert } from "@/utils/helpers";
 import { validateEmail, validatePassword, validatePhone } from "@/utils/auth";
+import { useRouter } from "next/navigation";
 
 function Login({ showRegisterForm }) {
+  const router = useRouter()
   const [isShowSms, setIsShowSms] = useState(false);
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -53,6 +55,7 @@ function Login({ showRegisterForm }) {
     const result = await res.json();
     switch (res.status) {
       case 200:
+        router.back()
         return sweetalert(
           "با موفقیت وارد شدید",
           "success",

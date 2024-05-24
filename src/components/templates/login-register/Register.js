@@ -3,8 +3,11 @@ import styles from "./register.module.css";
 import Sms from "./Sms";
 import { sweetalert } from "@/utils/helpers";
 import { validateEmail, validatePassword, validatePhone } from "@/utils/auth";
+import { useRouter } from "next/navigation";
 
 function Register({ showloginForm }) {
+  const router = useRouter()
+
   const [registerWithPass, setRegisterWithPass] = useState(false);
   const [isShowSms, setIsShowSms] = useState(false);
 
@@ -57,6 +60,7 @@ function Register({ showloginForm }) {
     const response = await res.json();
     switch (res.status) {
       case 201:
+        router.back()
         return sweetalert(
           "ثبت نام با موفقیت انجام شد",
           "success",
