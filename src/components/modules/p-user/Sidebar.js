@@ -20,7 +20,9 @@ const Sidebar = () => {
       buttons: ["نه", "آره"],
     }).then(async (result) => {
       if (result) {
-        const res = await fetch("/api/auth/signout");
+        const res = await fetch("/api/auth/signout",{
+          method:"POST"
+        });
         if (res.status === 200) {
           swal({
             title: "باموفقیت از حساب خارج شدید",
