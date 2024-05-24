@@ -1,4 +1,5 @@
 import { validateEmail } from "@/utils/auth";
+import { authUser } from "@/utils/serverHelpers";
 import connectToDB from "base/configs/db";
 import commentModel from "base/models/Comment";
 
@@ -7,7 +8,10 @@ export async function POST(req) {
     await connectToDB();
     const reqBody = await req.json();
     const { username, body, email, score, product } = reqBody;
-
+    const user = await authUser();
+    if (!user) {
+      return Response.json({ message: "Please login first" });
+    }
     if (
       !username.trim() ||
       !body.trim() ||
@@ -37,6 +41,7 @@ export async function POST(req) {
       body,
       email,
       score,
+      user: user._id,
       product,
     });
     return Response.json(

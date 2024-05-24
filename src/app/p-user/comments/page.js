@@ -10,7 +10,7 @@ const page = async () => {
   connectToDB();
   const user = await authUser();
   const comments = await commentModel
-    .find({ username: user.name }, "-__v")
+    .find({ user: user._id }, "-__v")
     .populate("product", "name");
 
   return (
