@@ -1,10 +1,9 @@
 "use client";
 import styles from "./product.module.css";
 import Link from "next/link";
-import { IoMdStar } from "react-icons/io";
+import { FaRegStar, FaStar } from "react-icons/fa";
 import swal from "sweetalert";
 const Card = ({ price, score, name }) => {
-
   const removeProduct = (productId) => {
     swal({
       title: "آیا از حذف محصول اطمینان دارید؟",
@@ -27,12 +26,15 @@ const Card = ({ price, score, name }) => {
       </Link>
       <p dir="rtl">{name}</p>
       <div>
+        <span>{price.toLocaleString()} تومان</span>
         <div>
           {new Array(score).fill(0).map((item, index) => (
-            <IoMdStar key={index} />
+            <FaStar key={index} />
+          ))}
+          {new Array(5 - score).fill(0).map((item, index) => (
+            <FaRegStar key={index} />
           ))}
         </div>
-        <span>{price.toLocaleString()} تومان</span>
       </div>
       <button onClick={() => removeProduct(null)} className={styles.delete_btn}>
         حذف محصول{" "}

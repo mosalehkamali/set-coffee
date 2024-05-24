@@ -10,11 +10,12 @@ const page = async () => {
   const user = await authUser();
   const wishlist = JSON.parse(
     JSON.stringify(
-      await WishlistModel.find({ user: user._id }).populate("product","name score price")
+      await WishlistModel.find({ user: user._id }).populate(
+        "product",
+        "name score price"
+      )
     )
   );
-
-  console.log(wishlist)
 
   return (
     <UserPanelLayout>
@@ -24,7 +25,9 @@ const page = async () => {
         </h1>
         <div className={styles.container}>
           {wishlist.length &&
-            wishlist.map((wish) => <Product key={wish._id} {...wish.product} />)}
+            wishlist.map((wish) => (
+              <Product key={wish._id} {...wish.product} />
+            ))}
         </div>
 
         {wishlist.length === 0 && (
