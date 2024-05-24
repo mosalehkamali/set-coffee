@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-export function POST(req) {
+export function GET(req) {
   try {
     cookies().delete("token");
     return Response.json(
