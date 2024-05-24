@@ -4,7 +4,6 @@ import Link from "next/link";
 import { IoMdStar } from "react-icons/io";
 import swal from "sweetalert";
 const Card = ({ price, score, name }) => {
-  console.log(price);
 
   const removeProduct = (productId) => {
     swal({

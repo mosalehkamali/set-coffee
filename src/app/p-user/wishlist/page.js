@@ -10,11 +10,11 @@ const page = async () => {
   const user = await authUser();
   const wishlist = JSON.parse(
     JSON.stringify(
-      await WishlistModel.find({ user: user._id }).populate("product")
+      await WishlistModel.find({ user: user._id }).populate("product","name score price")
     )
   );
 
-  console.log(wishlist[0].product)
+  console.log(wishlist)
 
   return (
     <UserPanelLayout>
