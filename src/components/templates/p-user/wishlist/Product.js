@@ -4,10 +4,8 @@ import styles from "./product.module.css";
 import Link from "next/link";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import swal from "sweetalert";
-import { useRouter } from "next/navigation";
 
 const Card = ({ price, score, name, _id }) => {
-  const router = useRouter();
   const removeProduct = () => {
     swal({
       title: "آیا از حذف محصول اطمینان دارید؟",
@@ -23,12 +21,13 @@ const Card = ({ price, score, name, _id }) => {
           body: JSON.stringify({ productId: _id }),
         });
         if (res.status === 200) {
-          sweetalert(
-            "محصول از لیست علاقه مندی های شما حذف شد",
-            "success",
-            "فهمیدم"
-          );
-          router.refresh();
+          swal({
+            title: "محصول از لیست علاقه مندی های شما حذف شد",
+            icon: "success",
+            buttons: "فهمیدم",
+          }).then(() => {
+            location.reload();
+          });
         } else {
           sweetalert(
             "حذف محصول از لیست علاقه مندی های شما با خطا مواجه شد",
@@ -62,7 +61,7 @@ const Card = ({ price, score, name, _id }) => {
           ))}
         </div>
       </div>
-      <button onClick={() => removeProduct(null)} className={styles.delete_btn}>
+      <button onClick={removeProduct} className={styles.delete_btn}>
         حذف محصول{" "}
       </button>
     </div>
