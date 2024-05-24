@@ -2,6 +2,7 @@ import connectToDB from "base/configs/db";
 import userModel from "base/models/User";
 import productModel from "base/models/Product";
 import wishlistModel from "base/models/Wishlist";
+import { authUser } from "@/utils/serverHelpers";
 
 export async function POST(req) {
   try {
@@ -41,6 +42,30 @@ export async function POST(req) {
       { message: "Product Added To Wishlist successfully" },
       {
         status: 201,
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    return Response.json(
+      { message: "UnKnown Internal Server Error!!!" },
+      {
+        status: 500,
+      }
+    );
+  }
+}
+
+export async function DELETE(req) {
+  try {
+    await connectToDB();
+    const { productId } = await req.json();
+    const user = await authUser();
+    const userId = user._id;
+    await wishlistModel.findOneAndDelete({ user: userId, product: productId });
+    return Response.json(
+      { message: "Product removed from your wishlist successfully " },
+      {
+        status: 200,
       }
     );
   } catch (err) {
