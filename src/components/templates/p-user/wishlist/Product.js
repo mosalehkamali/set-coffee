@@ -1,16 +1,42 @@
 "use client";
+import { sweetalert } from "@/utils/helpers";
 import styles from "./product.module.css";
 import Link from "next/link";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import swal from "sweetalert";
-const Card = ({ price, score, name }) => {
-  const removeProduct = (productId) => {
+import { useRouter } from "next/navigation";
+
+const Card = ({ price, score, name, _id }) => {
+  const router = useRouter();
+  const removeProduct = () => {
     swal({
       title: "آیا از حذف محصول اطمینان دارید؟",
       icon: "warning",
       buttons: ["نه", "آره"],
-    }).then((result) => {
-      //code
+    }).then(async (result) => {
+      if (result) {
+        const res = await fetch("/api/wishlist", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ productId: _id }),
+        });
+        if (res.status === 200) {
+          sweetalert(
+            "محصول از لیست علاقه مندی های شما حذف شد",
+            "success",
+            "فهمیدم"
+          );
+          router.refresh();
+        } else {
+          sweetalert(
+            "حذف محصول از لیست علاقه مندی های شما با خطا مواجه شد",
+            "error",
+            "فهمیدم"
+          );
+        }
+      }
     });
   };
 
