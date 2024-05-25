@@ -27,6 +27,10 @@ const schema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    hasAnswer: {
+      type: Boolean,
+      default:false,
+    },
   },
   {
     timestamps: true,
