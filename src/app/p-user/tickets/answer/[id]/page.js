@@ -4,13 +4,21 @@ import Link from "next/link";
 import Answer from "@/components/templates/p-user/tickets/Answer";
 import connectToDB from "base/configs/db";
 import TicketModel from "base/models/Ticket";
+import { authUser } from "@/utils/serverHelpers";
+import userModel from "base/models/User";
 
 const page = async ({ params }) => {
   const ticketID = params.id;
   connectToDB();
-  const ticket = await TicketModel.findOne({ _id: ticketID });
+  const user = await authUser();
+  const ticketData = await TicketModel.findOne(
+    { _id: ticketID },
+    "body createdAt"
+  )
+    .populate("answer", "user body createdAt")
+    .lean();
 
-
+  const ticket = JSON.parse(JSON.stringify(ticketData));
   return (
     <Layout>
       <main className={styles.container}>
@@ -20,12 +28,34 @@ const page = async ({ params }) => {
         </h1>
 
         <div>
-          <Answer type="user" />
-          <Answer type="admin" />
+          <Answer
+            ticket={{ body: ticket.body, date: ticket.createdAt }}
+            user={JSON.parse(
+              JSON.stringify({ role: user.role, name: user.name })
+            )}
+          />
+          {ticket.answer.length > 0 &&
+            ticket.answer.map(async (answer) => {
+              const user = await userModel.findOne(
+                { _id: answer.user },
+                "role name"
+              );
+              return (
+                <Answer
+                  key={answer._id}
+                  ticket={{ body: answer.body, date: answer.createdAt }}
+                  user={JSON.parse(
+                    JSON.stringify({ role: user.role, name: user.name })
+                  )}
+                />
+              );
+            })}
 
-          {/* <div className={styles.empty}>
-            <p>هنوز پاسخی دریافت نکردید</p>
-          </div> */}
+          {ticket.answer.length === 0 && (
+            <div className={styles.empty}>
+              <p>هنوز پاسخی دریافت نکردید</p>
+            </div>
+          )}
         </div>
       </main>
     </Layout>

@@ -9,8 +9,8 @@ const page = async () => {
   const user = await authUser();
   const tickets = await ticketModel
     .find({ user: user._id })
-    .populate("department")
-    .populate("answer")
+    .populate("department","title")
+    .populate("answer","_id")
     .lean();
 
   return (

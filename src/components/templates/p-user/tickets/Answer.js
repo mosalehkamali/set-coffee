@@ -1,22 +1,22 @@
 import styles from "./answer.module.css";
 
-const Answer = ({ type }) => {
+const Answer = ({ ticket, user }) => {
   return (
     <section
-      className={type == "user" ? styles.userTicket : styles.adminticket}
+      className={user.role == "USER" ? styles.userTicket : styles.adminticket}
     >
       <div className={styles.ticket_main}>
-        <p>8:56 1402/10/21 </p>
+        <p>{new Date(ticket.date).toLocaleDateString("fa-IR")} </p>
         <div>
           <div>
-            <p>شاهین مشکل گشا</p>
-            <span>کاربر</span>
+            <p>{user.name}</p>
+            <span>{user.role === "USER" ? "کاربر" : "ادمین"}</span>
           </div>
           <img src="/images/shahin.jpg" alt="" />
         </div>
       </div>
       <div className={styles.ticket_text}>
-        <p>درود خسته نباشید</p>
+        <p>{ticket.body}</p>
       </div>
     </section>
   );
