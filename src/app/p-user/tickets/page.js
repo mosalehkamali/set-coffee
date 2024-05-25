@@ -7,7 +7,11 @@ import ticketModel from "base/models/Ticket";
 const page = async () => {
   connectToDB();
   const user = await authUser();
-  const tickets = await ticketModel.find({ user: user._id }).populate("department","title");
+  const tickets = await ticketModel
+    .find({ user: user._id })
+    .populate("department")
+    .populate("answer")
+    .lean();
 
   return (
     <Layout>

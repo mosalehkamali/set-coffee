@@ -27,15 +27,23 @@ const schema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    hasAnswer: {
-      type: Boolean,
-      default:false,
+    request: {
+      type: mongoose.Types.ObjectId,
+      ref:"Ticket",
+      required:false,
     },
   },
   {
     timestamps: true,
   }
 );
+
+schema.virtual("answer",{
+  ref:"Ticket",
+  localField:"_id",
+  foreignField:"request"
+})
+
 
 const model = mongoose.models.Ticket || mongoose.model("Ticket", schema);
 

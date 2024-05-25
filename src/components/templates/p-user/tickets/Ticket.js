@@ -2,7 +2,7 @@ import Link from "next/link";
 import styles from "./ticket.module.css";
 import { useEffect, useState } from "react";
 
-const Ticket = ({ _id, title, createdAt, department, hasAnswer, priority }) => {
+const Ticket = ({ _id, title, createdAt, department, answer, priority }) => {
   const [priorityLevel, setPriorityLevel] = useState("");
   useEffect(() => {
     switch (priority) {
@@ -30,7 +30,7 @@ const Ticket = ({ _id, title, createdAt, department, hasAnswer, priority }) => {
       <div>
         <p>{new Date(createdAt).toLocaleDateString("fa-IR")}</p>
         <p className={styles.no_answer}>
-          {hasAnswer ? "پاسخ داده شده" : "پاسخ داده نشده"}
+          {answer.length > 0 ? "پاسخ داده شده" : "پاسخ داده نشده"}
         </p>
         {/* answer */}
       </div>
