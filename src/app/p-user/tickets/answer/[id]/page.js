@@ -4,17 +4,15 @@ import Link from "next/link";
 import Answer from "@/components/templates/p-user/tickets/Answer";
 import connectToDB from "base/configs/db";
 import TicketModel from "base/models/Ticket";
-import { authUser } from "@/utils/serverHelpers";
 import userModel from "base/models/User";
 
 const page = async ({ params }) => {
   const ticketID = params.id;
   connectToDB();
-  const user = await authUser();
   const ticketData = await TicketModel.findOne(
     { _id: ticketID },
     "title body createdAt"
-  )
+  ).populate("user","role name")
     .populate("answer", "user body createdAt")
     .lean();
 
@@ -30,9 +28,7 @@ const page = async ({ params }) => {
         <div>
           <Answer
             ticket={{ body: ticket.body, date: ticket.createdAt }}
-            user={JSON.parse(
-              JSON.stringify({ role: user.role, name: user.name })
-            )}
+            user={ticket.user}
           />
           {ticket.answer.length > 0 &&
             ticket.answer.map(async (answer) => {
