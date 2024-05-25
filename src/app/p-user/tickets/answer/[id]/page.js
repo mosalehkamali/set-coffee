@@ -13,7 +13,7 @@ const page = async ({ params }) => {
   const user = await authUser();
   const ticketData = await TicketModel.findOne(
     { _id: ticketID },
-    "body createdAt"
+    "title body createdAt"
   )
     .populate("answer", "user body createdAt")
     .lean();
@@ -23,7 +23,7 @@ const page = async ({ params }) => {
     <Layout>
       <main className={styles.container}>
         <h1 className={styles.title}>
-          <span>تیکت تستی</span>
+          <span>{ticket.title}</span>
           <Link href="/p-user/tickets/sendTicket">ارسال تیکت جدید</Link>
         </h1>
 
