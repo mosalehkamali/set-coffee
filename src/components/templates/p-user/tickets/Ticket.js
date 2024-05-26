@@ -7,7 +7,7 @@ const Ticket = ({ _id, title, createdAt, department, answer, priority }) => {
   useEffect(() => {
     switch (priority) {
       case 1:
-        setPriorityLevel("زیاد");
+        setPriorityLevel("بالا");
         break;
       case 2:
         setPriorityLevel("متوسط");
