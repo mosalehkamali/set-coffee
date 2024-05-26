@@ -12,9 +12,9 @@ const Layout = async ({ children }) => {
   return (
     <div className={styles.layout}>
       <section className={styles.section}>
-        <Sidebar />
+        <Sidebar name={user.name} />
         <div className={styles.contents}>
-          <Topbar />
+          <Topbar user={{ name: user.name, role: user.role }} />
           {children}
         </div>
       </section>

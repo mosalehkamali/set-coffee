@@ -3,7 +3,10 @@ import styles from "@/styles/p-user/index.module.css";
 import Box from "@/components/templates/p-user/index/Box";
 import Tickets from "@/components/templates/p-user/index/Tickets";
 import Orders from "@/components/templates/p-user/index/Orders";
-const page = () => {
+import { authUser } from "@/utils/serverHelpers";
+const page = async() => {
+const user = await authUser()
+
   return (
     <Layout>
       <main>
