@@ -16,7 +16,6 @@ const page = async () => {
       )
     )
   );
-
   return (
     <UserPanelLayout>
       <main>
@@ -25,9 +24,10 @@ const page = async () => {
         </h1>
         <div className={styles.container}>
           {wishlist.length &&
-            wishlist.map((wish) => (
-              <Product key={wish._id} {...wish.product} />
-            ))}
+            wishlist.map(
+              (wish) =>
+                wish.product && <Product key={wish._id} {...wish.product} />
+            )}
         </div>
 
         {wishlist.length === 0 && (
