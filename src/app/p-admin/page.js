@@ -8,6 +8,8 @@ import TicketModel from "base/models/Ticket";
 import UserModel from "base/models/User";
 import ProductModel from "base/models/Product";
 import connectToDB from "base/configs/db";
+import SaleChart from "@/components/templates/p-admin/index/SaleChart";
+import GrowChart from "@/components/templates/p-admin/index/GrowChart";
 
 async function AdminHomePage() {
   connectToDB();
@@ -27,9 +29,11 @@ async function AdminHomePage() {
         <div className={styles.dashboard_charts}>
           <section>
             <p>آمار فروش</p>
+            <SaleChart />
           </section>
           <section>
             <p>نرخ رشد</p>
+            <GrowChart />
           </section>
         </div>
       </main>
