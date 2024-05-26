@@ -5,9 +5,10 @@ import Sms from "./Sms";
 import { sweetalert } from "@/utils/helpers";
 import { validateEmail, validatePassword, validatePhone } from "@/utils/auth";
 import { useRouter } from "next/navigation";
+import swal from "sweetalert";
 
 function Login({ showRegisterForm }) {
-  const router = useRouter()
+  const router = useRouter();
   const [isShowSms, setIsShowSms] = useState(false);
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -26,11 +27,7 @@ function Login({ showRegisterForm }) {
     }
 
     if (!password.trim()) {
-      return sweetalert(
-        "لطفا رمز را وارد کنید",
-        "error",
-        "تلاش مجدد"
-      );
+      return sweetalert("لطفا رمز را وارد کنید", "error", "تلاش مجدد");
     }
 
     if (!validatePhone(identifier) && !validateEmail(identifier)) {
@@ -52,15 +49,16 @@ function Login({ showRegisterForm }) {
       },
       body: JSON.stringify(data),
     });
-    const result = await res.json();
     switch (res.status) {
       case 200:
-        router.back()
-        return sweetalert(
-          "با موفقیت وارد شدید",
-          "success",
-          "ورود به پنل کاربری"
-        );
+        swal({
+          title: "با موفقیت وارد شدید",
+          icon: "success",
+          buttons: "ورود به پنل کاربری",
+        }).then(() => {
+          router.replace("/p-user");
+        });
+        break;
       case 403:
         return sweetalert("اطلاعات وارد شده معتبر نیست", "error", "تلاش مجدد");
       case 419:

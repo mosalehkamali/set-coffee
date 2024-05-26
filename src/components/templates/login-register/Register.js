@@ -4,9 +4,10 @@ import Sms from "./Sms";
 import { sweetalert } from "@/utils/helpers";
 import { validateEmail, validatePassword, validatePhone } from "@/utils/auth";
 import { useRouter } from "next/navigation";
+import swal from "sweetalert";
 
 function Register({ showloginForm }) {
-  const router = useRouter()
+  const router = useRouter();
 
   const [registerWithPass, setRegisterWithPass] = useState(false);
   const [isShowSms, setIsShowSms] = useState(false);
@@ -60,12 +61,14 @@ function Register({ showloginForm }) {
     const response = await res.json();
     switch (res.status) {
       case 201:
-        router.back()
-        return sweetalert(
-          "ثبت نام با موفقیت انجام شد",
-          "success",
-          "ورود به پنل کاربری"
-        );
+        swal({
+          title: "ثبت نام با موفقیت انجام شد",
+          icon: "success",
+          buttons: "ورود به پنل کاربری",
+        }).then(() => {
+          router.replace("/p-user");
+        });
+        break;
       case 403:
         return sweetalert("اطلاعات وارد شده معتبر نیست", "error", "تلاش مجدد");
       case 422:
