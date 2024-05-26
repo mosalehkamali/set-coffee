@@ -29,7 +29,7 @@ const Ticket = ({ _id, title, createdAt, department, answer, priority }) => {
       </p>
       <div>
         <p>{new Date(createdAt).toLocaleDateString("fa-IR")}</p>
-        <p className={styles.no_answer}>
+        <p className={answer.length > 0 ? styles.answer:styles.no_answer}>
           {answer.length > 0 ? "پاسخ داده شده" : "پاسخ داده نشده"}
         </p>
         {/* answer */}
