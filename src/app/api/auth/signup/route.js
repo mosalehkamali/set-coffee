@@ -50,9 +50,9 @@ export async function POST(req) {
         }
       );
     }
-
     const isUserExist = await userModel.findOne({
-      $or: [{ name }, { email }, { phone }],
+      $or: [{ name }, { email: email ? email  : "" }, { phone }],
+
     });
 
     if (isUserExist) {

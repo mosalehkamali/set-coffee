@@ -7,8 +7,8 @@ import userModel from "base/models/User";
 export async function POST(req) {
   try {
     connectToDB();
-    const { email, phone } = req.json();
-
+    const {phone,email} = await req.json();
+    
     const applicant = await authUser();
 
     if (applicant) {
@@ -39,9 +39,9 @@ export async function POST(req) {
         }
       );
     }
-
+    
     await banModel.create({ email, phone });
-    await userModel.findOneAndDelete({ _id: userId });
+    await userModel.findOneAndDelete({ $or: [{ email }, { phone }] });
 
     return Response.json(
       { message: "User Banned Successfully !!" },
