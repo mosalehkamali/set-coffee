@@ -8,7 +8,6 @@ export default function DataTable({ users, title }) {
   const router = useRouter();
 
   const changeRole = async (userId) => {
-
     const res = await fetch("/api/user/role", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -42,39 +41,46 @@ export default function DataTable({ users, title }) {
     }
   };
 
-  const deleteUser = async (userId) => {
-
-    const res = await fetch("/api/user", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId }),
+  const deleteUser = (userId) => {
+    swal({
+      title: "آیا از حذف کاربر اطمینان دارید؟",
+      icon: "warning",
+      buttons: ["نه", "بله"],
+    }).then(async (result) => {
+      if (result) {
+        const res = await fetch("/api/user", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        });
+        switch (res.status) {
+          case 200:
+            return swal({
+              title: "حذف کاربر با موفقیت انجام شد",
+              icon: "success",
+              buttons: "فهمیدم",
+            }).then(() => router.refresh());
+          case 403:
+            return swal({
+              title: "فقط مدیر به این گزینه دسترسی دارد !!!",
+              icon: "warning",
+              buttons: "فهمیدم",
+            });
+          case 404:
+            return swal({
+              title: "کاربری با آیدی ارسال شده یافت نشد !!!",
+              icon: "warning",
+              buttons: "فهمیدم",
+            });
+          case 500:
+            return swal({
+              title: "خطای سرور : حذف کاربر ناموفق بود !!!",
+              icon: "error",
+              buttons: "فهمیدم",
+            });
+        }
+      }
     });
-    switch (res.status) {
-      case 200:
-        return swal({
-          title: "حذف کاربر با موفقیت انجام شد",
-          icon: "success",
-          buttons: "فهمیدم",
-        }).then(() => router.refresh());
-      case 403:
-        return swal({
-          title: "فقط مدیر به این گزینه دسترسی دارد !!!",
-          icon: "warning",
-          buttons: "فهمیدم",
-        });
-      case 404:
-        return swal({
-          title: "کاربری با آیدی ارسال شده یافت نشد !!!",
-          icon: "warning",
-          buttons: "فهمیدم",
-        });
-      case 500:
-        return swal({
-          title: "خطای سرور : حذف کاربر ناموفق بود !!!",
-          icon: "error",
-          buttons: "فهمیدم",
-        });
-    }
   };
 
   return (
@@ -120,7 +126,11 @@ export default function DataTable({ users, title }) {
                   </button>
                 </td>
                 <td>
-                  <button type="button" onClick={()=>deleteUser(user._id)} className={styles.delete_btn}>
+                  <button
+                    type="button"
+                    onClick={() => deleteUser(user._id)}
+                    className={styles.delete_btn}
+                  >
                     حذف
                   </button>
                 </td>
