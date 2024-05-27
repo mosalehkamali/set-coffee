@@ -2,10 +2,6 @@ const { default: mongoose } = require("mongoose");
 
 const schema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: false,
-    },
     phone: {
       type: String,
       required: false,
