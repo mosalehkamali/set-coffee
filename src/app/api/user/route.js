@@ -10,7 +10,12 @@ export async function POST(req) {
     const { name, email, phone } = await req.json();
     const user = await authUser();
     if (!user) {
-      return Response.json({ message: "Please login first" });
+      return Response.json(
+        { message: "Please login first" },
+        {
+          status: 401,
+        }
+      );
     }
 
     if (!name.trim() || !phone.trim() || !email.trim()) {
