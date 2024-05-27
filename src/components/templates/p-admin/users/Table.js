@@ -1,23 +1,13 @@
 "use client";
 
-import React from "react";
-import styles from "./table.module.css";
-import swal from "sweetalert";
 import { useRouter } from "next/navigation";
-import { isValidObjectId } from "mongoose";
+import swal from "sweetalert";
+import styles from "./table.module.css";
 
 export default function DataTable({ users, title }) {
   const router = useRouter();
 
   const changeRole = async (userId) => {
-
-    if(!isValidObjectId(userId)){
-      return swal({
-        title: "آیدی ارسال شده  معتبر نیست!!",
-        icon: "error",
-        buttons: "فهمیدم",
-      });
-    }
 
     const res = await fetch("/api/user/role", {
       method: "PUT",
@@ -46,6 +36,41 @@ export default function DataTable({ users, title }) {
       case 500:
         return swal({
           title: "خطای سرور : تغییر نقش ناموفق بود !!!",
+          icon: "error",
+          buttons: "فهمیدم",
+        });
+    }
+  };
+
+  const deleteUser = async (userId) => {
+
+    const res = await fetch("/api/user", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    });
+    switch (res.status) {
+      case 200:
+        return swal({
+          title: "حذف کاربر با موفقیت انجام شد",
+          icon: "success",
+          buttons: "فهمیدم",
+        }).then(() => router.refresh());
+      case 403:
+        return swal({
+          title: "فقط مدیر به این گزینه دسترسی دارد !!!",
+          icon: "warning",
+          buttons: "فهمیدم",
+        });
+      case 404:
+        return swal({
+          title: "کاربری با آیدی ارسال شده یافت نشد !!!",
+          icon: "warning",
+          buttons: "فهمیدم",
+        });
+      case 500:
+        return swal({
+          title: "خطای سرور : حذف کاربر ناموفق بود !!!",
           icon: "error",
           buttons: "فهمیدم",
         });
@@ -95,7 +120,7 @@ export default function DataTable({ users, title }) {
                   </button>
                 </td>
                 <td>
-                  <button type="button" className={styles.delete_btn}>
+                  <button type="button" onClick={()=>deleteUser(user._id)} className={styles.delete_btn}>
                     حذف
                   </button>
                 </td>
