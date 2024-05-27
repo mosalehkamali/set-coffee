@@ -6,7 +6,7 @@ import ticketModel from "base/models/Ticket";
 export async function POST(req) {
   try {
     await connectToDB();
-    const { title, body, department, priority } = await req.json();
+    const { title, body, department, priority, request } = await req.json();
 
     const user = await authUser();
     if (!user) {
@@ -52,6 +52,7 @@ export async function POST(req) {
       priority,
       body,
       user: user._id,
+      request: user.role === "ADMIN" && request,
     });
 
     if (!ticket) {
