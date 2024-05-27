@@ -25,7 +25,7 @@ const page = async () => {
           <Table
             tickets={JSON.parse(JSON.stringify(tickets))}
             userId={JSON.parse(JSON.stringify(user._id))}
-            title="لیست کاربران"
+            title="لیست تیکت ها"
           />
         )}
       </main>
