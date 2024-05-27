@@ -3,10 +3,10 @@ import styles from "./answer.module.css";
 const Answer = ({ ticket, user }) => {
   return (
     <section
-      className={user.role == "USER" ? styles.userTicket : styles.adminticket}
+      className={ticket.answer?.length > 0 ? styles.userTicket : styles.adminticket}
     >
       <div className={styles.ticket_main}>
-        <p>{new Date(ticket.date).toLocaleDateString("fa-IR")} </p>
+        <p>{new Date(ticket.createdAt).toLocaleDateString("fa-IR")} </p>
         <div>
           <div>
             <p>{user.name}</p>

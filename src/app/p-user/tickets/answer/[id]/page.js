@@ -27,7 +27,7 @@ const page = async ({ params }) => {
 
         <div>
           <Answer
-            ticket={{ body: ticket.body, date: ticket.createdAt }}
+            ticket={ticket}
             user={ticket.user}
           />
           {ticket.answer.length > 0 &&
@@ -39,7 +39,7 @@ const page = async ({ params }) => {
               return (
                 <Answer
                   key={answer._id}
-                  ticket={{ body: answer.body, date: answer.createdAt }}
+                  ticket={answer}
                   user={JSON.parse(
                     JSON.stringify({ role: user.role, name: user.name })
                   )}
