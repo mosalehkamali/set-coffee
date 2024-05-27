@@ -8,7 +8,7 @@ const page = async () => {
   connectToDB();
   const user = await authUser();
   const tickets = await ticketModel
-    .find({ user: user._id })
+    .find({ user: user._id, request: undefined })
     .populate("department", "title")
     .populate("answer", "_id")
     .sort({ _id: -1 })

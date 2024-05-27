@@ -10,7 +10,7 @@ import wishlistModel from "base/models/Wishlist";
 const page = async () => {
   const user = await authUser();
   const tickets = await ticketModel
-    .find({ user: user._id }, "title createdAt")
+    .find({ user: user._id , request:undefined}, "title createdAt")
     .populate("department", "title")
     .populate("answer", "_id")
     .limit(3)
