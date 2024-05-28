@@ -1,3 +1,4 @@
+import { authUser } from "@/utils/serverHelpers";
 import connectToDB from "base/configs/db";
 import commentModel from "base/models/Comment";
 
@@ -20,7 +21,7 @@ export async function PUT(req) {
       return Response.json({ message: "Please login first" }, { status: 401 });
     }
 
-    await commentModel.findOneAndUpdate(
+    const comment = await commentModel.findOneAndUpdate(
       { _id: commentId },
       { $set: { isAccept: true } }
     );

@@ -1,3 +1,4 @@
+import { authUser } from "@/utils/serverHelpers";
 import connectToDB from "base/configs/db";
 import commentModel from "base/models/Comment";
 

@@ -11,6 +11,80 @@ export default function DataTable({ comments, title }) {
     sweetalert(body, undefined, "خوندم");
   };
 
+  const rejectCommnet = (commentId) => {
+    swal({
+      title: "آیا از رد این کامنت اطمینان دارید",
+      icon: "info",
+      buttons: ["نه", "بله"],
+    }).then(async (result) => {
+      if (result) {
+        const res = await fetch("/api/comments/reject", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ commentId }),
+        });
+
+        switch (res.status) {
+          case 200:
+            return swal({
+              title: "رد کامنت با موفقیت انجام شد",
+              icon: "success",
+              buttons: "فهمیدم",
+            }).then(() => router.refresh());
+          case 403:
+            return swal({
+              title: "فقط مدیر به این گزینه دسترسی دارد !!!",
+              icon: "warning",
+              buttons: "فهمیدم",
+            });
+          case 500:
+            return swal({
+              title: "خطای سرور : رد کامنت ناموفق بود !!!",
+              icon: "error",
+              buttons: "فهمیدم",
+            });
+        }
+      }
+    });
+  };
+
+  const acceptCommnet = (commentId) => {
+    swal({
+      title: "آیا از تایید این کامنت اطمینان دارید",
+      icon: "info",
+      buttons: ["نه", "بله"],
+    }).then(async (result) => {
+      if (result) {
+        const res = await fetch("/api/comments/accept", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ commentId }),
+        });
+
+        switch (res.status) {
+          case 200:
+            return swal({
+              title: "تایید کامنت با موفقیت انجام شد",
+              icon: "success",
+              buttons: "فهمیدم",
+            }).then(() => router.refresh());
+          case 403:
+            return swal({
+              title: "فقط مدیر به این گزینه دسترسی دارد !!!",
+              icon: "warning",
+              buttons: "فهمیدم",
+            });
+          case 500:
+            return swal({
+              title: "خطای سرور : تایید کامنت ناموفق بود !!!",
+              icon: "error",
+              buttons: "فهمیدم",
+            });
+        }
+      }
+    });
+  };
+
   return (
     <div>
       <div>
@@ -73,11 +147,19 @@ export default function DataTable({ comments, title }) {
                 </td>
                 <td>
                   {comment.isAccept ? (
-                    <button type="button" className={styles.delete_btn}>
+                    <button
+                      type="button"
+                      onClick={() => rejectCommnet(comment._id)}
+                      className={styles.delete_btn}
+                    >
                       رد
                     </button>
                   ) : (
-                    <button type="button" className={styles.delete_btn}>
+                    <button
+                      type="button"
+                      onClick={() => acceptCommnet(comment._id)}
+                      className={styles.delete_btn}
+                    >
                       تایید
                     </button>
                   )}
