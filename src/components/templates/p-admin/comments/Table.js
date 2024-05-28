@@ -31,7 +31,7 @@ export default function DataTable({ comments, title }) {
               <th>مشاهده</th>
               <th>ویرایش</th>
               <th>حذف</th>
-              <th>تایید</th>
+              <th>رد/تایید</th>
               <th>پاسخ</th>
               <th>بن</th>
             </tr>
@@ -39,7 +39,14 @@ export default function DataTable({ comments, title }) {
           <tbody>
             {comments.map((comment, index) => (
               <tr key={comment._id}>
-                <td style={{"backgroundColor":comment.isAccept? "green" : "#711D1C","color":"#fff"}}>{index + 1}</td>
+                <td
+                  style={{
+                    backgroundColor: comment.isAccept ? "green" : "#711D1C",
+                    color: "#fff",
+                  }}
+                >
+                  {index + 1}
+                </td>
                 <td>{comment.user.name}</td>
                 <td>{comment.email}</td>
                 <td>{comment.score}</td>
@@ -65,9 +72,15 @@ export default function DataTable({ comments, title }) {
                   </button>
                 </td>
                 <td>
-                  <button type="button" className={styles.delete_btn}>
-                    تایید
-                  </button>
+                  {comment.isAccept ? (
+                    <button type="button" className={styles.delete_btn}>
+                      رد
+                    </button>
+                  ) : (
+                    <button type="button" className={styles.delete_btn}>
+                      تایید
+                    </button>
+                  )}
                 </td>
                 <td>
                   <button type="button" className={styles.delete_btn}>
