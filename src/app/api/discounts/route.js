@@ -5,7 +5,7 @@ import discountModel from "base/models/Discount";
 export async function POST(req) {
   try {
     connectToDB();
-    const { code, percent, maxUse, uses } = await req.json();
+    const { code, percent, maxUse } = await req.json();
 
     const applicant = await authUser();
 
@@ -19,11 +19,11 @@ export async function POST(req) {
     } else {
       return Response.json({ message: "Please login first" }, { status: 401 });
     }
-    if (!code.trim() || !percent || !maxUse || !uses) {
+    if (!code.trim() || !+percent || !+maxUse) {
       return Response.json(
         { message: "Data is not valid !!" },
         {
-          status: 403,
+          status: 409,
         }
       );
     }
@@ -43,11 +43,11 @@ export async function POST(req) {
     }
 
     return Response.json(
-        { message: "Discount code created successfully" },
-        {
-          status: 201,
-        }
-      );
+      { message: "Discount code created successfully" },
+      {
+        status: 201,
+      }
+    );
   } catch (err) {
     console.log(err);
     return Response.json(

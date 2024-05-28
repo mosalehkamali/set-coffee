@@ -92,3 +92,28 @@
   padding: 0.5rem 1.5rem;
   margin-top: 1.4rem;
 }
+
+.empty {
+  color: white;
+  background-color: #711d1c;
+  padding: 0.7rem 2rem;
+  width: max-content;
+  margin: 3rem auto;
+  font-size: 1.7rem;
+  border-radius: 5px;
+}
+
+.expiered {
+  background-color: #E43D30;
+  color: #fff;
+  border-radius: 50%;
+  width: 3rem;
+  aspect-ratio: 1 / 1;
+}
+.valid {
+  background-color: #239342;
+  color: #fff;
+  border-radius: 50%;
+  width: 3rem;
+  aspect-ratio: 1 / 1;
+}
