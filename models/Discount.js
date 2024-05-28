@@ -11,14 +11,12 @@ const schema = new mongoose.Schema(
       required: true,
     },
     maxUse: {
-      // 5
       type: Number,
       required: true,
     },
     uses: {
-      // 1
       type: Number,
-      required: true,
+      default: 0,
     },
   },
   {
