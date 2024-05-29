@@ -26,7 +26,7 @@ export async function PUT(req) {
     await discountModel.findOneAndUpdate(
       { code },
       {
-        $set: { uses: discount.uses + 1 },
+        $inc: { uses: 1 },
       }
     );
 
