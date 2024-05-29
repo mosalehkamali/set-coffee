@@ -14,6 +14,13 @@ function Login({ showRegisterForm }) {
   const [password, setPassword] = useState("");
 
   const showSmsForm = () => {
+    if (!validatePhone(identifier)) {
+      return sweetalert(
+        "لطفا شماره موبایل را به صورت صحیح وارد کنید",
+        "error",
+        "تلاش مجدد"
+      );
+    }
     setIsShowSms(!isShowSms);
   };
 
@@ -78,6 +85,29 @@ function Login({ showRegisterForm }) {
     }
   };
 
+  const sendOtp = async () => {
+    if (!validatePhone(identifier)) {
+      return sweetalert(
+        "لطفا شماره موبایل را به صورت صحیح وارد کنید",
+        "error",
+        "تلاش مجدد"
+      );
+    }
+    const res = await fetch("/api/auth/sms/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: identifier }),
+    });
+    if (res.status === 201) {
+      swal({
+        title: "کد به شماره وارد شده ارسال شد",
+        icon: "success",
+        buttons: "باشه",
+      }).then(() => setIsShowSms(true));
+    } else if (res.status === 410) {
+      sweetalert("بیش از سه بار کد اشتباه وارد کردید", "error", "فهمیدم");
+    }
+  };
   return (
     <>
       {!isShowSms ? (
@@ -110,7 +140,7 @@ function Login({ showRegisterForm }) {
             >
               رمز عبور را فراموش کرده اید؟
             </Link>
-            <button className={styles.btn} onClick={showSmsForm}>
+            <button className={styles.btn} onClick={sendOtp}>
               ورود با کد یکبار مصرف
             </button>
             <span>ایا حساب کاربری ندارید؟</span>
@@ -123,7 +153,7 @@ function Login({ showRegisterForm }) {
           </Link>
         </>
       ) : (
-        <Sms showSmsForm={showSmsForm} />
+        <Sms showSmsForm={showSmsForm} phone={identifier} />
       )}
     </>
   );

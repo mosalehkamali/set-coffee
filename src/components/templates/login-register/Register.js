@@ -81,6 +81,30 @@ function Register({ showloginForm }) {
         return sweetalert(response.message, "error", "تلاش مجدد");
     }
   };
+
+  const sendOtp = async () => {
+    if (!validatePhone(phone)) {
+      return sweetalert(
+        "لطفا شماره موبایل را به صورت صحیح وارد کنید",
+        "error",
+        "تلاش مجدد"
+      );
+    }
+    const res = await fetch("/api/auth/sms/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone }),
+    });
+    if (res.status === 201) {
+      swal({
+        title: "کد به شماره وارد شده ارسال شد",
+        icon: "success",
+        buttons: "باشه",
+      }).then(() => setIsShowSms(true));
+    } else if (res.status === 410) {
+      sweetalert("بیش از سه بار کد اشتباه وارد کردید", "error", "فهمیدم");
+    }
+  };
   return (
     <>
       {!isShowSms ? (
@@ -117,7 +141,7 @@ function Register({ showloginForm }) {
               />
             )}
             <p
-              onClick={showSmsForm}
+              onClick={sendOtp}
               style={{ marginTop: "1rem" }}
               className={styles.btn}
             >
@@ -138,7 +162,7 @@ function Register({ showloginForm }) {
           <p className={styles.redirect_to_home}>لغو</p>
         </>
       ) : (
-        <Sms showSmsForm={showSmsForm} />
+        <Sms showSmsForm={showSmsForm} phone={phone} />
       )}
     </>
   );

@@ -7,7 +7,7 @@ export async function POST(req) {
   try {
     connectToDB();
     const { phone } = await req.json();
-
+    
     if (!validatePhone(phone)) {
       return Response.json(
         { message: "Phone is not valid !!" },
@@ -18,12 +18,13 @@ export async function POST(req) {
     }
 
     const code = Math.floor(Math.random() * 10000 + 10000).toString();
-    const now = new Date()
-    const expTime = now.getTime() + 120_000
+
+    const now = new Date();
+    const expTime = now.getTime() + 120_000;
+
     const isOtp = await otpModel.findOne({ phone });
 
-    if (isOtp) {
-      if (isOtp.useTimes === isOtp.maxUse) {
+    if (isOtp && isOtp.useTimes === isOtp.maxUse) {
         await otpModel.findOneAndUpdate(
           { phone },
           {
@@ -36,14 +37,6 @@ export async function POST(req) {
             status: 410,
           }
         );
-      }
-
-      await otpModel.findOneAndUpdate(
-        { phone },
-        {
-          $set: { code , expTime},
-        }
-      );
     }
 
     request.post(
@@ -63,23 +56,30 @@ export async function POST(req) {
       async function (error, response, body) {
         if (!error && response.statusCode === 200) {
           //YOU‌ CAN‌ CHECK‌ THE‌ RESPONSE‌ AND SEE‌ ERROR‌ OR‌ SUCCESS‌ MESSAGE
-          console.log("ok");
-          await otpModel.create({ phone, code, expTime });
-        } else {
-            console.log(error);
-            return Response.json(
-              { message: "failed to sending code !!!" },
-              { status: 500 }
+          if (isOtp) {
+            await otpModel.findOneAndUpdate(
+              { phone },
+              {
+                $set: { code, expTime },
+              }
             );
+          } else {
+            await otpModel.create({ phone, code, expTime });
+          }
+        } else {
+          console.log(error);
+          return Response.json(
+            { message: "failed to sending code !!!" },
+            { status: 500 }
+          );
         }
       }
     );
 
     return Response.json(
-        { message: "Code sent to phone successfully" },
-        { status: 201 }
-      );
-
+      { message: "Code sent to phone successfully" },
+      { status: 201 }
+    );
   } catch (err) {
     console.log(err);
     return Response.json(

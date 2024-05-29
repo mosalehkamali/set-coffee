@@ -4,7 +4,7 @@ const schema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      default: "کاربر ست کافی",
     },
     phone: {
       type: String,
