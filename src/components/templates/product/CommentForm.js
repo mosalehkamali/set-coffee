@@ -1,6 +1,6 @@
 import { IoMdStar } from "react-icons/io";
 import styles from "./commentForm.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { validateEmail } from "@/utils/auth";
 import { sweetalert } from "@/utils/helpers";
 const CommentForm = ({ productID }) => {
@@ -9,11 +9,21 @@ const CommentForm = ({ productID }) => {
   const [email, setEmail] = useState("");
   const [score, setScore] = useState();
   const [showUserScore, setShowUserScore] = useState(false);
+  const [saveInfos, setSaveInfos] = useState(false);
 
   const signScore = (userScore) => {
     setScore(userScore);
     setShowUserScore(true);
   };
+
+  useEffect(() => {
+   
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      if (userInfo) {
+        setEmail(userInfo.email);
+        setUsername(userInfo.username);
+      }
+  }, []);
 
   const signComment = async () => {
     if (
@@ -23,11 +33,19 @@ const CommentForm = ({ productID }) => {
       !score ||
       !productID.trim()
     ) {
-      return sweetalert("لطفا همه بخش های مورد نیاز را پر کنید","error","فهمیدم")
+      return sweetalert(
+        "لطفا همه بخش های مورد نیاز را پر کنید",
+        "error",
+        "فهمیدم"
+      );
     }
 
     if (!validateEmail(email)) {
-      return sweetalert("ایمیل وارد شده معتبر نیست !!","error","تلاش مجدد")
+      return sweetalert("ایمیل وارد شده معتبر نیست !!", "error", "تلاش مجدد");
+    }
+
+    if (saveInfos) {
+      localStorage.setItem("userInfo", JSON.stringify({ username, email }));
     }
 
     const res = await fetch("/api/comments", {
@@ -43,10 +61,9 @@ const CommentForm = ({ productID }) => {
         product: productID,
       }),
     });
-    if(res.status === 201){
-      return sweetalert("کامنت شما با موفقیت ثبت شد","success","باشه")
+    if (res.status === 201) {
+      return sweetalert("کامنت شما با موفقیت ثبت شد", "success", "باشه");
     }
-    
   };
   return (
     <div className={styles.form}>
@@ -121,7 +138,12 @@ const CommentForm = ({ productID }) => {
         </div>
       </div>
       <div className={styles.checkbox}>
-        <input type="checkbox" name="" id="" />
+        <input
+          type="checkbox"
+          name=""
+          id=""
+          onChange={(e) => setSaveInfos(e.target.checked)}
+        />
         <p>
           {" "}
           ذخیره نام، ایمیل و وبسایت من در مرورگر برای زمانی که دوباره دیدگاهی

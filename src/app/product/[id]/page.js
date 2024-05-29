@@ -20,7 +20,7 @@ const product = async ({ params }) => {
   const comments = product.comments.filter((comment) => comment.isAccept);
   const allScores = comments.map((comment) => comment.score);
   const averageScore =
-    allScores > 0
+    allScores.length > 0
       ? Math.floor(allScores.reduce((a, b) => a + b, 0) / allScores.length)
       : 0;
   if (comments.length > 0) {

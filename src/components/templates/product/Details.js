@@ -16,7 +16,7 @@ const Details = ({
   shortDescription,
   category,
   tag,
-  commentsLength,
+  comments,
   _id,
   averageScore,
 }) => {
@@ -92,7 +92,7 @@ const Details = ({
             <FaRegStar key={index} />
           ))}
         </div>
-        <p>(دیدگاه {commentsLength} کاربر)</p>
+        <p>(دیدگاه {comments.length} کاربر)</p>
       </div>
       <p className={styles.price}>{price.toLocaleString()}</p>
       <span className={styles.description}>{shortDescription}</span>
