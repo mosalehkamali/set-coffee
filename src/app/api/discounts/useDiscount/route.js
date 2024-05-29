@@ -1,7 +1,7 @@
 import connectToDB from "base/configs/db";
 import discountModel from "base/models/Discount";
 
-export async function POST(req) {
+export async function PUT(req) {
   try {
     connectToDB();
     const { code } = await req.json();
