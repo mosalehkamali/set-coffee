@@ -51,8 +51,7 @@ export async function POST(req) {
       );
     }
     const isUserExist = await userModel.findOne({
-      $or: [{ name }, { email: email ? email  : "" }, { phone }],
-
+      $or: [{ name }, { email: email ? email : "" }, { phone }],
     });
 
     if (isUserExist) {
@@ -93,6 +92,9 @@ export async function POST(req) {
     );
   } catch (err) {
     console.log(err);
-    return Response.json({ error: "UnKnown Internal Server Error !!!" });
+    return Response.json(
+      { error: "UnKnown Internal Server Error !!!" },
+      { status: 500 }
+    );
   }
 }

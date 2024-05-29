@@ -14,10 +14,17 @@ const schema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    times: {
+    useTimes: {
       type: Number,
       default: 0,
     },
+    maxUse: {
+      type: Number,
+      default: 3,
+    },
+  },
+  {
+    timestamps: true,
   }
 );
 
