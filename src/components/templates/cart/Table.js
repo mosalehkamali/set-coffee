@@ -6,6 +6,7 @@ import { IoMdClose } from "react-icons/io";
 import { useEffect, useState } from "react";
 import stateData from "@/utils/stateData";
 import Select from "react-select";
+import { sweetalert } from "@/utils/helpers";
 
 const stateOptions = stateData();
 
@@ -13,23 +14,42 @@ const Table = () => {
   const [cart, setCart] = useState([]);
   const [stateSelectedOption, setStateSelectedOption] = useState(null);
   const [changeAddress, setChangeAddress] = useState(false);
+  const [code, setCode] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(localCart);
+    let price = 0;
+    localCart.reduce((prev,current) => {
+      const calcPrice = current.price * current.count;
+      price = price + calcPrice;
+      setTotalPrice(price);
+    },0);
   }, []);
 
-  const calcTotalPrice = () => {
-    let totalPrice = 0;
-
-    if (cart.length) {
-      totalPrice = cart.reduce(
-        (prev, current) => prev + current.price * current.count,
-        0
-      );
+  const useDiscount = async () => {
+    if (!code.trim()) {
+     return sweetalert("کد تخفیف را وارد کنید", "warning", "باشه");
     }
+    const res = await fetch("/api/discounts/useDiscount", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code }),
+    });
 
-    return totalPrice;
+    const data = await res.json();
+
+    if (res.status === 200) {
+      const discountPrice = totalPrice - (totalPrice * data.percent) / 100;
+      setTotalPrice(discountPrice);
+      setCode("");
+      return sweetalert("کدتخفیف با موفقیت اعمال شد", "success", "فهمیدم");
+    } else if (res.status === 404) {
+      return sweetalert("این کد تخفیف وجود ندارد", "warning", "تلاش مجدد");
+    } else if (res.status === 410) {
+      return sweetalert("این کد تخفیف منقضی شده است", "warning", "تلاش مجدد");
+    }
   };
 
   return (
@@ -48,7 +68,7 @@ const Table = () => {
           </thead>
           <tbody>
             {cart.map((item) => (
-              <tr>
+              <tr key={item.id}>
                 <td>{(item.count * item.price).toLocaleString()} تومان</td>
                 <td className={styles.counter}>
                   <div>
@@ -78,8 +98,15 @@ const Table = () => {
         <section>
           <button className={styles.update_btn}> بروزرسانی سبد خرید</button>
           <div>
-            <button className={styles.set_off_btn}>اعمال کوپن</button>
-            <input type="text" placeholder="کد تخفیف" />
+            <button onClick={useDiscount} className={styles.set_off_btn}>
+              اعمال کوپن
+            </button>
+            <input
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              type="text"
+              placeholder="کد تخفیف"
+            />
           </div>
         </section>
       </div>
@@ -124,7 +151,7 @@ const Table = () => {
 
         <div className={totalStyles.total}>
           <p>مجموع</p>
-          <p>{calcTotalPrice().toLocaleString()} تومان</p>
+          <p>{totalPrice.toLocaleString()} تومان</p>
         </div>
         <Link href={"/checkout"}>
           <button className={totalStyles.checkout_btn}>
