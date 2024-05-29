@@ -20,17 +20,18 @@ const Table = () => {
   useEffect(() => {
     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(localCart);
-    let price = 0;
-    localCart.reduce((prev,current) => {
-      const calcPrice = current.price * current.count;
-      price = price + calcPrice;
-      setTotalPrice(price);
-    },0);
+
+    localCart.reduce((prev, current) => {
+      const calcPrice = prev + current.price * current.count;
+      setTotalPrice(calcPrice);
+      return calcPrice;
+    }, 0);
+    
   }, []);
 
   const useDiscount = async () => {
     if (!code.trim()) {
-     return sweetalert("کد تخفیف را وارد کنید", "warning", "باشه");
+      return sweetalert("کد تخفیف را وارد کنید", "warning", "باشه");
     }
     const res = await fetch("/api/discounts/useDiscount", {
       method: "PUT",
