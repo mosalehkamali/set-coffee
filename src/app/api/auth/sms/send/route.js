@@ -7,7 +7,7 @@ export async function POST(req) {
   try {
     connectToDB();
     const { phone } = await req.json();
-    
+
     if (!validatePhone(phone)) {
       return Response.json(
         { message: "Phone is not valid !!" },
@@ -24,19 +24,31 @@ export async function POST(req) {
 
     const isOtp = await otpModel.findOne({ phone });
 
-    if (isOtp && isOtp.useTimes === isOtp.maxUse) {
+    if (isOtp) {
+      if (isOtp.useTimes === isOtp.maxUse) {
         await otpModel.findOneAndUpdate(
           { phone },
           {
-            $set: { useTimes: 0 },
+            $set: { useTimes: 0, waitTime: now.getTime() + 600_000 },
           }
         );
         return Response.json(
-          { message: "Limit usege !!!" },
+          { message: "Limit usege , you have to wait !!!", remainingTime: 10 },
           {
             status: 410,
           }
         );
+      } else if (isOtp.waitTime > now.getTime()) {
+        const remainingTime = Math.floor(
+          (isOtp.waitTime - now.getTime()) / 60000
+        );
+        return Response.json(
+          { message: "Limit usege , you have to wait !!!", remainingTime },
+          {
+            status: 410,
+          }
+        );
+      }
     }
 
     request.post(

@@ -14,6 +14,10 @@ const schema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    waitTime: {
+      type: Number,
+      default: 0,
+    },
     useTimes: {
       type: Number,
       default: 0,
