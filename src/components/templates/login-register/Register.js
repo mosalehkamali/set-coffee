@@ -26,7 +26,6 @@ function Register({ showloginForm }) {
   };
 
   const signUp = async () => {
-
     if (!validatePhone(phone)) {
       return sweetalert(
         "لطفا شماره موبایل را به صورت صحیح وارد کنید",
