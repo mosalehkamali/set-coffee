@@ -15,7 +15,6 @@ export async function POST(req) {
     const reqBody = await req.json();
     const { name, phone, email, password } = reqBody;
 
-
     if (!validatePhone(phone)) {
       return Response.json(
         { message: "Phone is not valid !!" },
@@ -57,7 +56,7 @@ export async function POST(req) {
     const hashedPassword = password ? await hasher(password) : password;
     const users = await userModel.find({});
     const user = await userModel.create({
-      name,
+      name: name.trim() ? name : undefined,
       phone,
       email,
       password: hashedPassword,
