@@ -1,3 +1,4 @@
+import { authUser } from "@/utils/serverHelpers";
 import connectToDB from "base/configs/db";
 import productModel from "base/models/Product";
 import { writeFile } from "fs/promises";
@@ -5,6 +6,19 @@ import path from "path";
 
 export async function POST(req) {
   try {
+    const applicant = await authUser();
+
+    if (applicant) {
+      if (applicant.role !== "ADMIN") {
+        return Response.json(
+          { message: "Only admin can perform this operation" },
+          { status: 403 }
+        );
+      }
+    } else {
+      return Response.json({ message: "Please login first" }, { status: 401 });
+    }
+
     await connectToDB();
     const formData = await req.formData();
 
@@ -34,7 +48,7 @@ export async function POST(req) {
       smell,
       category,
       tag,
-      image:`http://localhost:3000/uploads/${filename}`,
+      image: `http://localhost:3000/uploads/${filename}`,
     });
 
     return Response.json(
@@ -59,46 +73,6 @@ export async function GET(req) {
     await connectToDB();
     const products = await productModel.find({}).populate("comments").lean();
     return Response.json({ message: "All Products", products });
-  } catch (err) {
-    console.log(err);
-    return Response.json(
-      { error: "UnKnown Internal Server Error !!!" },
-      {
-        status: 500,
-      }
-    );
-  }
-}
-
-export async function PUT(req) {
-  try {
-    const formData = await req.formData();
-    const img = formData.get("img");
-
-    if (!img) {
-      return Response.json(
-        { message: "product doesn't have image " },
-        {
-          status: 400,
-        }
-      );
-    }
-
-    const filename = Date.now() + img.name;
-
-    const buffer = Buffer.from(await img.arrayBuffer());
-
-    await writeFile(
-      path.join(process.cwd(), "/public/uploads", filename),
-      buffer
-    );
-
-    return Response.json(
-      { message: "file uploaded successfully " },
-      {
-        status: 201,
-      }
-    );
   } catch (err) {
     console.log(err);
     return Response.json(
