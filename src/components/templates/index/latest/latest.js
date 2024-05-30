@@ -2,10 +2,12 @@ import Link from "next/link";
 import styles from "./latest.module.css";
 import { FaChevronLeft } from "react-icons/fa6";
 import Product from "@/components/modules/product/product";
-import productModel from "base/models/Product"
+import productModel from "base/models/Product";
 const Latest = async () => {
   const products = JSON.parse(
-    JSON.stringify(await productModel.find({}, "name price score"))
+    JSON.stringify(
+      await productModel.find({}, "name price score image").sort({ _id: -1 })
+    )
   );
   return (
     <div className={styles.container}>
@@ -19,8 +21,9 @@ const Latest = async () => {
         </Link>
       </section>
       <main data-aos="fade-up" className={styles.products}>
-        {products.map(product=><Product key={product._id} product={product}/>)}
-       
+        {products.map((product) => (
+          <Product key={product._id} product={product} />
+        ))}
       </main>
     </div>
   );

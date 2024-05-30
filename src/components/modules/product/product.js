@@ -9,7 +9,7 @@ export default function Product({product}) {
         <div className={styles.card}>
           <div className={styles.details_container}>
             <img
-              src="/images/cardProduct.png"
+              src={product.image || "/images/cardProduct.png"}
               alt=""
             />
             <div className={styles.icons}>
