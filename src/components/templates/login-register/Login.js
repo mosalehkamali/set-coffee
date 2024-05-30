@@ -105,7 +105,13 @@ function Login({ showRegisterForm }) {
         buttons: "باشه",
       }).then(() => setIsShowSms(true));
     } else if (res.status === 410) {
-      sweetalert("بیش از سه بار کد اشتباه وارد کردید", "error", "فهمیدم");
+      const response = await res.json();
+      sweetalert(
+        `شما بیش از سه بار کد اشتباه وارد کردید.
+        ${response.remainingTime} دقیقه دیگر دوباره امتحان کنید`,
+        "error",
+        "فهمیدم"
+      );
     }
   };
   return (

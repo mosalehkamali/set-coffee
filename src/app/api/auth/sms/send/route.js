@@ -39,7 +39,7 @@ export async function POST(req) {
           }
         );
       } else if (isOtp.waitTime > now.getTime()) {
-        const remainingTime = Math.floor(
+        const remainingTime = Math.ceil(
           (isOtp.waitTime - now.getTime()) / 60000
         );
         return Response.json(
