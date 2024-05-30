@@ -21,11 +21,7 @@ const schema = new mongoose.Schema(
     useTimes: {
       type: Number,
       default: 0,
-    },
-    maxUse: {
-      type: Number,
-      default: 3,
-    },
+    }
   },
   {
     timestamps: true,

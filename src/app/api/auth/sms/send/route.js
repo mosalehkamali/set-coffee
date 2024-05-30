@@ -25,7 +25,7 @@ export async function POST(req) {
     const isOtp = await otpModel.findOne({ phone });
 
     if (isOtp) {
-      if (isOtp.useTimes === isOtp.maxUse) {
+      if (isOtp.useTimes === 3) {
         await otpModel.findOneAndUpdate(
           { phone },
           {

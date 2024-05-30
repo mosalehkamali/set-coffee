@@ -16,7 +16,7 @@ export async function PUT(req) {
       );
     } else if (discount.uses === discount.maxUse) {
       return Response.json(
-        { message: "This discount code does is expiered !!!" },
+        { message: "This discount code is expiered !!!" },
         {
           status: 410,
         }
