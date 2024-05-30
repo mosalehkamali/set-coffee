@@ -26,9 +26,6 @@ function Register({ showloginForm }) {
   };
 
   const signUp = async () => {
-    if (!name.trim()) {
-      return sweetalert("لطفا نام را وارد کنید", "error", "تلاش مجدد");
-    }
 
     if (!validatePhone(phone)) {
       return sweetalert(

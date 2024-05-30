@@ -43,7 +43,7 @@ export async function POST(req) {
     }
 
     const user = await userModel.findOne({
-      $or: [{ name: identifier }, { email: identifier }],
+      $or: [{ phone: identifier }, { email: identifier }],
     });
 
     if (!user) {
@@ -65,12 +65,13 @@ export async function POST(req) {
         }
       );
     }
-
-    const token = tokenGenrator({ name: user.name });
-    const refreshToken = generateRefreshToken({ name: user.name });
+    const token = tokenGenrator({ phone: user.phone });
+    const refreshToken = generateRefreshToken({ phone: user.phone });
 
     await userModel.findOneAndUpdate(
-      { $or: [{ name: identifier }, { email: identifier }] },
+      {
+        $or: [{ phone: identifier }, { email: identifier }],
+      },
       {
         $set: { refreshToken },
       }

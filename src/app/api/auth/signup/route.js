@@ -15,14 +15,6 @@ export async function POST(req) {
     const reqBody = await req.json();
     const { name, phone, email, password } = reqBody;
 
-    if (!name.trim() || !phone.trim()) {
-      return Response.json(
-        { message: "Complete All Required Fields !!" },
-        {
-          status: 403,
-        }
-      );
-    }
 
     if (!validatePhone(phone)) {
       return Response.json(
@@ -81,7 +73,7 @@ export async function POST(req) {
       );
     }
 
-    const token = tokenGenrator({ name });
+    const token = tokenGenrator({ phone });
 
     return Response.json(
       { message: "User Registered Successfully :))" },

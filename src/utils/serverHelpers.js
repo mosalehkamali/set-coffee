@@ -11,7 +11,7 @@ export const authUser = async () => {
     const tokenPayLoad = verifyToken(token);
     if (tokenPayLoad) {
       return JSON.parse(
-        JSON.stringify(await userModel.findOne({ name: tokenPayLoad.name }))
+        JSON.stringify(await userModel.findOne({ phone: tokenPayLoad.phone }))
       );
     } else {
       return false;
