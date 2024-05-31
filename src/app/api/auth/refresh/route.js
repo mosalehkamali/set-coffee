@@ -7,8 +7,6 @@ export async function GET(req) {
   try {
     const refreshToken = cookies().get("refresh-token").value;
 
-   
-
     if (!refreshToken) {
       return Response.json(
         { message: "user is not login" },
@@ -42,6 +40,9 @@ export async function GET(req) {
     );
   } catch (err) {
     console.log(err);
-    return Response.json({ error: "UnKnown Internal Server Error !!!" });
+    return Response.json(
+      { error: "UnKnown Internal Server Error !!!" },
+      { status: 500 }
+    );
   }
 }
