@@ -13,7 +13,7 @@ export const passwordValidator = async (password,hashedPassword ) => {
 
 export const tokenGenrator = (data) => {
   const token = sign({ ...data }, process.env.AccessTokenPrivateKey, {
-    expiresIn: "3600s",
+    expiresIn: "10s",
     algorithm:"HS256",
   });
   return token;
