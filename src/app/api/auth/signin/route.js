@@ -77,13 +77,18 @@ export async function POST(req) {
       }
     );
 
+    const headers = new Headers();
+    headers.append("Set-Cookie", `token=${token};path=/;httpOnly=true`);
+    headers.append(
+      "Set-Cookie",
+      `refresh-token=${refreshToken};path=/;httpOnly=true`
+    );
+
     return Response.json(
       { message: "User Logged In Successfully " },
       {
         status: 200,
-        headers: {
-          "Set-Cookie": `token=${token};path=/;httpOnly=true`,
-        },
+        headers,
       }
     );
   } catch (err) {
