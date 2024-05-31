@@ -2,8 +2,6 @@
 import React from "react";
 import styles from "./table.module.css";
 import { useRouter } from "next/navigation";
-import { showSwal } from "@/utils/helpers";
-import swal from "sweetalert";
 export default function DataTable({ products, title }) {
   const router = useRouter();
 

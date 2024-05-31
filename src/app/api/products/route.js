@@ -30,7 +30,7 @@ export async function POST(req) {
     const suitableFor = formData.get("suitableFor");
     const smell = formData.get("smell");
     const category = formData.get("category");
-    const tag = JSON.parse(formData.get("tag"));
+    const tag = formData.get("tag");
     const img = formData.get("img");
 
     const filename = Date.now() + img.name;
