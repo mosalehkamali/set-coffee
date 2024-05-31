@@ -1,4 +1,5 @@
 import {
+  generateRefreshToken,
   hasher,
   tokenGenrator,
   validateEmail,
@@ -53,7 +54,11 @@ export async function POST(req) {
         }
       );
     }
+
     const hashedPassword = password ? await hasher(password) : password;
+
+    const refreshToken = generateRefreshToken({ phone: user.phone });
+
     const users = await userModel.find({});
     const user = await userModel.create({
       name: name.trim() ? name : undefined,
@@ -61,6 +66,7 @@ export async function POST(req) {
       email,
       password: hashedPassword,
       role: users.length > 0 ? roles.USER : roles.ADMIN,
+      refreshToken,
     });
 
     if (!user) {
@@ -74,11 +80,19 @@ export async function POST(req) {
 
     const token = tokenGenrator({ phone });
 
+    const headers = new Headers();
+
+    headers.append("Set-Cookie", `token=${token};path=/;httpOnly=true`);
+    headers.append(
+      "Set-Cookie",
+      `refresh-token=${refreshToken};path=/;httpOnly=true`
+    );
+
     return Response.json(
       { message: "User Registered Successfully :))" },
       {
         status: 201,
-        headers: { "Set-Cookie": `token=${token};path=/;httpOnly=true` },
+        headers,
       }
     );
   } catch (err) {
