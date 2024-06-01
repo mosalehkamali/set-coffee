@@ -7,8 +7,22 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 
-function Navbar({isLogin}) {
+function Navbar() {
   const [fixTop, setFixTop] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  useEffect(() => {
+    const getUser = async () => {
+      const res = await fetch("/api/auth/me");
+      if(res.status===200){
+        setIsLogin(true)
+      }else{
+        router.replace('/login-register')
+      }
+    };
+    getUser();
+   
+  }, []);
+
   useEffect(() => {
     const fixNavToTop = () => {
       if (window.scrollY > 110) {
